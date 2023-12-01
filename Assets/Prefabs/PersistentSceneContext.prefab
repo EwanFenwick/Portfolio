@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3030806985116239382}
   - component: {fileID: 3968352176555754278}
   - component: {fileID: 6174176798199212352}
+  - component: {fileID: 4164709413431125206}
   m_Layer: 0
   m_Name: PersistentSceneContext
   m_TagString: Untagged
@@ -75,5 +76,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a140bf90c30041a4c9fdad652feecb6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4164709413431125206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3429304248291805594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36ecfac83c3e7b141a8993dbd4a5ee4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
