@@ -7,6 +7,13 @@
       "dependencies": {},
       "hash": "5cc97c7f0085624b6ef57853d70b404440060cef"
     },
+    "com.mygamedevtools.scene-loader": {
+      "version": "https://github.com/mygamedevtools/scene-loader.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "a78b8b867be6264131cbbe0d8bd516f5c82fa167"
+    },
     "com.unity.ai.navigation": {
       "version": "1.1.5",
       "depth": 0,
