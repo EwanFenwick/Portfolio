@@ -8,7 +8,7 @@ using static Portfolio.SceneManagement.SceneManagementEnums;
 namespace Portfolio.SceneManagement {
 	public class PersistentSceneBootstrapper : MonoBehaviour {
 
-		[Inject] private readonly SceneIndexLibrary _sceneAssetCollection;
+		[Inject] private readonly SceneIndexLibrary _sceneIndexLibrary;
 
 		private async void Start() {
 			Screen.sleepTimeout = SleepTimeout.NeverSleep;
@@ -17,11 +17,11 @@ namespace Portfolio.SceneManagement {
 
 		private async UniTask LoadGameScene() {
 			//load new scene
-			ISceneManager sceneManager = new SceneManager();
-			ISceneLoaderAsync sceneLoader = new SceneLoaderAsync(sceneManager);
+			var sceneManager = new SceneManager();
+			var sceneLoader = new SceneLoaderAsync(sceneManager);
 
-			var gameSceneInfo = new LoadSceneInfoIndex(_sceneAssetCollection.GetSceneIndex(SceneType.Game));
-			var loadingSceneInfo = new LoadSceneInfoIndex(_sceneAssetCollection.GetSceneIndex(SceneType.Loading));
+			var gameSceneInfo = new LoadSceneInfoIndex(_sceneIndexLibrary.GetSceneIndex(SceneType.Game));
+			var loadingSceneInfo = new LoadSceneInfoIndex(_sceneIndexLibrary.GetSceneIndex(SceneType.Loading));
 
 			await sceneLoader.TransitionToSceneAsync(gameSceneInfo, loadingSceneInfo);
 		}
