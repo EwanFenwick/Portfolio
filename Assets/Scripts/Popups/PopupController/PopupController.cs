@@ -1,22 +1,26 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniRx;
-using UnityEngine;
 using Zenject;
 
 namespace Portfolio.PopupController {
     public class PopupController {
+
+        #region Variables
+
         [Inject] private PopupControllerView _popupControllerView;
 
         private List<PopupRequest> _activePopups = new List<PopupRequest>();
-
         private Queue<PopupRequest> _popupQueue = new Queue<PopupRequest>();
+
+        #endregion
 
         public PopupController() {
             _activePopups.ObserveEveryValueChanged(x => x.Count).Subscribe(OnActivePopupsChanged);
             _popupQueue.ObserveEveryValueChanged(x => x.Count).Subscribe(OnPopupQueueChanged);
         }
+
+        #region Public Methods
 
         public void RequestPopup(PopupRequest request) {
             if(request == null) {
@@ -25,6 +29,10 @@ namespace Portfolio.PopupController {
 
             _popupQueue.Enqueue(request);
         }
+
+        #endregion
+
+        #region Private Methods
 
         private void TryOpenNextPopup() {
             if(_activePopups.Any(p => p.Dismissable == false)) {
@@ -49,5 +57,7 @@ namespace Portfolio.PopupController {
                 TryOpenNextPopup();
             }
         }
+
+        #endregion
     }
 }
