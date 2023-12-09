@@ -15,6 +15,7 @@ public class PlayerMoveState : PlayerBaseState {
         stateMachine.Animator.CrossFadeInFixedTime(MoveBlendTreeHash, CrossFadeDuration);
 
         stateMachine.InputReader.OnJumpPerformed += SwitchToJumpState;
+        stateMachine.InputReader.OnInterationPerformed += ProcessInteraction;
     }
 
     public override void Tick() {
@@ -32,9 +33,14 @@ public class PlayerMoveState : PlayerBaseState {
 
     public override void Exit() {
         stateMachine.InputReader.OnJumpPerformed -= SwitchToJumpState;
+        stateMachine.InputReader.OnInterationPerformed -= ProcessInteraction;
     }
 
     private void SwitchToJumpState() {
         stateMachine.SwitchState(new PlayerJumpState(stateMachine));
+    }
+
+    private void ProcessInteraction() {
+        stateMachine.InteractionController.OnInteraction();
     }
 }

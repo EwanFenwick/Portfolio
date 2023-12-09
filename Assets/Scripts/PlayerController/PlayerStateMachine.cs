@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(InputReader))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(InteractionController))]
 public class PlayerStateMachine : StateMachine {
 
     public Vector3 Velocity;
@@ -13,6 +14,7 @@ public class PlayerStateMachine : StateMachine {
     public InputReader InputReader { get; private set; }
     public Animator Animator { get; private set; }
     public CharacterController Controller { get; private set; }
+    public InteractionController InteractionController { get; set; }
 
     private void Start() {
         MainCamera = Camera.main.transform;
@@ -20,6 +22,7 @@ public class PlayerStateMachine : StateMachine {
         InputReader = GetComponent<InputReader>();
         Animator = GetComponent<Animator>();
         Controller = GetComponent<CharacterController>();
+        InteractionController = GetComponent<InteractionController>();
 
         SwitchState(new PlayerMoveState(this));
     }
