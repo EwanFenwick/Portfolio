@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace Portfolio.PopupController {
     public class PopupControllerView : MonoBehaviour {
@@ -41,6 +42,12 @@ namespace Portfolio.PopupController {
 
         public void ClosePopup(Type popupType) {
             if(GetPopup(popupType) is var popup) {
+                popup.Close().Forget();
+            }
+        }
+
+        public void CloseAllPopups(bool instant = false) {
+            foreach (var popup in _popupInstances.Values.Where(p => p.isActiveAndEnabled)) {
                 popup.Close().Forget();
             }
         }

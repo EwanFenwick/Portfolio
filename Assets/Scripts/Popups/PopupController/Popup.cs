@@ -7,6 +7,9 @@ namespace Portfolio.PopupController {
         //[SerializeField] SomeCustomAnimator openAnimation;
 
         public async UniTaskVoid Open() {
+            //enable gameobject
+            gameObject.SetActive(true);
+
             //await the end of the opening animation
             //await UniTask.WaitUntil(() => isFinishedPlaying == true);
             //or await UniTask.WaitUntilValueChanged(openAnimation, x => x.isFinishedPlaying);
@@ -15,7 +18,6 @@ namespace Portfolio.PopupController {
 
         public async UniTaskVoid Close() {
             //await the end of the closing animation
-            //await UniTask.WaitUntil(() => isFinishedPlaying == true);
             await UniTask.Yield(); //TEMP
 
             //disable gameobject
