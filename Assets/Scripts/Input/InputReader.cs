@@ -10,6 +10,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions {
 	public Vector2 MoveComposite { get; set; }
 
 	public Action OnJumpPerformed { get; set; }
+	public Action OnInterationPerformed { get; set; }
 
 	#endregion
 
@@ -31,7 +32,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions {
 		controls.Player.Enable();
 	}
 
-	public void OnDisable() {
+	private void OnDisable() {
 		controls.Player.Disable();
 	}
 
@@ -55,5 +56,13 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions {
 		OnJumpPerformed?.Invoke();
 	}
 
-	#endregion
+    public void OnInteract(InputAction.CallbackContext context) {
+        if(!context.performed) {
+			return;
+		}
+
+		OnInterationPerformed?.Invoke();
+    }
+
+    #endregion
 }
