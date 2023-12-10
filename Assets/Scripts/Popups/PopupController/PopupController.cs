@@ -3,7 +3,7 @@ using System.Linq;
 using UniRx;
 using Zenject;
 
-namespace Portfolio.PopupController {
+namespace Portfolio.Popups {
     public class PopupController {
 
         #region Variables
@@ -36,10 +36,10 @@ namespace Portfolio.PopupController {
             }
 
             if(_activePopups.Any(x => x.PopupType == request.PopupType)) {
+                _popupControllerView.ClosePopup(request.PopupType);
+
                 _activePopups.RemoveAll(x => x.PopupType == request.PopupType);
                 _activePopups.TrimExcess();
-
-                _popupControllerView.ClosePopup(request.PopupType);
             }
         }
 

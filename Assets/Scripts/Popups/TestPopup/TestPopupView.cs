@@ -1,6 +1,5 @@
-using Portfolio.PopupController;
 
-namespace Portfolio.TestPopup {
+namespace Portfolio.Popups {
     public class TestPopupView : Popup {
 
     }

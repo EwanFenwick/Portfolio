@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Portfolio.PopupController {
+namespace Portfolio.Popups {
     public abstract class Popup : MonoBehaviour {
         
         //[SerializeField] SomeCustomAnimator openAnimation;

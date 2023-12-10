@@ -1,26 +1,60 @@
-using Portfolio.PopupController;
-using Portfolio.TestPopup;
+using Portfolio.Popups;
+using UniRx.Triggers;
+using UniRx;
 using UnityEngine;
 using Zenject;
+using Portfolio.Dialogue;
 
-public class InteractionController : MonoBehaviour {
+namespace Portfolio.PlayerController {
+    public class InteractionController : MonoBehaviour {
 
-    [Inject] PopupController _popupController;
+        [Inject] private readonly PopupController _popupController;
 
-    bool _testPopupOpen = false;
-    PopupRequest _testPopupRequest;
+        private bool _testPopupOpen = false;
+        private DialoguePopupRequest _testPopupRequest;
 
-    private void OnEnable() {
-        _testPopupRequest = new PopupRequest(typeof(TestPopupView));
-    }
+        private DialogueAgent _currentDialogueAgent;
 
-    public void OnInteraction() {
-        if(_testPopupOpen) {
-            _popupController.ClosePopup(_testPopupRequest);
-            _testPopupOpen = false;
-        } else {
-            _popupController.RequestPopup(_testPopupRequest);
-            _testPopupOpen = true;
+
+        private void OnEnable() {
+            _testPopupRequest = new DialoguePopupRequest(typeof(TestPopupView), "");
+
+            this.OnTriggerEnterAsObservable().Subscribe(other => CheckNewAgent(other));
+            this.OnTriggerExitAsObservable().Subscribe(other => RemoveAgent(other));
+        }
+
+        public void OnInteraction() {
+            if (_currentDialogueAgent == null) {
+                return;
+            }
+
+            _testPopupRequest.Dialogue = _currentDialogueAgent.GetDialogue();
+
+            if (_testPopupOpen) {
+                _popupController.ClosePopup(_testPopupRequest);
+                _testPopupOpen = false;
+            } else {
+                _popupController.RequestPopup(_testPopupRequest);
+                _testPopupOpen = true;
+            }
+        }
+
+        private void CheckNewAgent(Collider other) {
+            if(other.TryGetComponent<DialogueAgent>(out var x)) {
+                if (_currentDialogueAgent != null) {
+                    _currentDialogueAgent.CanInteract = false;
+                }
+                _currentDialogueAgent = x;
+                _currentDialogueAgent.CanInteract = true;
+            }
+        }
+
+        private void RemoveAgent(Collider other) {
+            if (_currentDialogueAgent != null && other.TryGetComponent<DialogueAgent>(out var x)) {
+                
+                _currentDialogueAgent.CanInteract = false;
+                _currentDialogueAgent = null;
+            }
         }
     }
 }

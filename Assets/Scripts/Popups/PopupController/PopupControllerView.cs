@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-namespace Portfolio.PopupController {
+namespace Portfolio.Popups {
     public class PopupControllerView : MonoBehaviour {
         
         #region Editor Variables

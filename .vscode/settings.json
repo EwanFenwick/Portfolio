@@ -56,5 +56,7 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Portfolio.sln"
+    "dotnet.defaultSolution": "Portfolio.sln",
+    "editor.formatOnPaste": true,
+    "dotnet.preferCSharpExtension": true
 }

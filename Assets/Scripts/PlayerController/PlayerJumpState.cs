@@ -1,29 +1,30 @@
 using UnityEngine;
 
-public class PlayerJumpState : PlayerBaseState {
+namespace Portfolio.PlayerController {
+    public class PlayerJumpState : PlayerBaseState {
 
-    private readonly int JumpHash = Animator.StringToHash("Jump");
-    private const float CrossFadeDuration = 0.1f;
+        private readonly int JumpHash = Animator.StringToHash("Jump");
+        private const float CrossFadeDuration = 0.1f;
 
-    public PlayerJumpState(PlayerStateMachine stateMachine) : base(stateMachine) { }
+        public PlayerJumpState(PlayerStateMachine stateMachine) : base(stateMachine) { }
 
-    public override void Enter() {
-        stateMachine.Velocity = new Vector3(stateMachine.Velocity.x, stateMachine.JumpForce, stateMachine.Velocity.z);
+        public override void Enter() {
+            stateMachine.Velocity = new Vector3(stateMachine.Velocity.x, stateMachine.JumpForce, stateMachine.Velocity.z);
 
-        stateMachine.Animator.CrossFadeInFixedTime(JumpHash, CrossFadeDuration);
-    }
-
-    public override void Tick() {
-        ApplyGravity();
-
-        if (stateMachine.Velocity.y <= 0f)
-        {
-            stateMachine.SwitchState(new PlayerFallState(stateMachine));
+            stateMachine.Animator.CrossFadeInFixedTime(JumpHash, CrossFadeDuration);
         }
 
-        FaceMoveDirection();
-        Move();
-    }
+        public override void Tick() {
+            ApplyGravity();
 
-    public override void Exit() { }
+            if(stateMachine.Velocity.y <= 0f) {
+                stateMachine.SwitchState(new PlayerFallState(stateMachine));
+            }
+
+            FaceMoveDirection();
+            Move();
+        }
+
+        public override void Exit() { }
+    }
 }
