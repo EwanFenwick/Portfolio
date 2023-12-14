@@ -6,15 +6,17 @@ This project is made with Unity2022.3.14f1.
 
 # Code Highlights
 To save scouring through the project for examples of my code, I suggest these classes as highlights:
-* The [PopupController](https://github.com/EwanFenwick/Portfolio/blob/master/Assets/Scripts/Popups/PopupController/PopupController.cs) and its [PopupControllerView](https://github.com/EwanFenwick/Portfolio/blob/master/Assets/Scripts/Popups/PopupController/PopupControllerView.cs)
-* The utility class [SerialisableDictionary](https://github.com/EwanFenwick/Portfolio/blob/master/Assets/Scripts/Utilities/SerialisableDictionary.cs)
+* The [PopupController](https://github.com/EwanFenwick/Portfolio/blob/master/Assets/Scripts/Popups/PopupController/PopupController.cs) and its [PopupControllerView](https://github.com/EwanFenwick/Portfolio/blob/master/Assets/Scripts/Popups/PopupController/PopupControllerView.cs).
+* A lightweight and asyncronous [TweenController](https://github.com/EwanFenwick/Portfolio/blob/master/Assets/Scripts/Tweening/TweenController.cs) that allows for simple tween animations for a variety of components following an ```AnimationCurve```.
+* The utility class [SerialisableDictionary](https://github.com/EwanFenwick/Portfolio/blob/master/Assets/Scripts/Utilities/SerialisableDictionary.cs).
 
 # Coding Conventions
 When beginning this project I decided upon the following patterns and conventions:
 * A Model-View-Presenter architectural pattern to improve seperation of concerns.
 * Dependency Injection to create a more loosely coupled system.
 * The "One True Brace Style" of bracket placement, which allows for new lines of code to be easily inserted anywhere.
-* Trailing Commas for simpler and cleaner merges.
+* Class-Scope variables are  a denoted with ```_```.
+* Trailing Commas are used for simpler and cleaner merges.
 
 <details>
 <summary>Regions</summary>
