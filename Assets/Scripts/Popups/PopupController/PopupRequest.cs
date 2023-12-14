@@ -14,8 +14,8 @@ namespace Portfolio.Popups {
     public class DialoguePopupRequest : PopupRequest {
         public string Dialogue { get; set; }
 
-        public DialoguePopupRequest(Type popupType, string dialogue, bool dismissable = false)
-            : base(popupType, dismissable) {
+        public DialoguePopupRequest(string dialogue)
+            : base(typeof(TestPopupView), dismissable: false) {
             Dialogue = dialogue;
         }
     }

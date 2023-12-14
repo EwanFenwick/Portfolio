@@ -34,9 +34,9 @@ namespace Portfolio.Popups {
 
         #region Public Methods
 
-        public void ShowPopup(Type popupType) {
-            if(GetPopup(popupType) is var popup) {
-                popup.Open().Forget();
+        public void ShowPopup(PopupRequest popupRequest) {
+            if(GetPopup(popupRequest.PopupType) is var popup) {
+                popup.Open(popupRequest).Forget();
             }
         }
 
@@ -47,7 +47,7 @@ namespace Portfolio.Popups {
         }
 
         public void CloseAllPopups(bool instant = false) {
-            foreach (var popup in _popupInstances.Values.Where(p => p.isActiveAndEnabled)) {
+            foreach(var popup in _popupInstances.Values.Where(p => p.isActiveAndEnabled)) {
                 popup.Close().Forget();
             }
         }
@@ -57,12 +57,12 @@ namespace Portfolio.Popups {
         #region Private Methods
 
         private Popup GetPopup(Type popupType) {
-            if(_popupInstances.TryGetValue(popupType, out Popup popupInstance)) {
+            if(_popupInstances.TryGetValue(popupType, out var popupInstance)) {
                 return popupInstance;
             }
 
-            if(_popupDictionary.TryGetValue(popupType, out Popup popup)) {
-                Popup instance = Instantiate(popup, transform);
+            if(_popupDictionary.TryGetValue(popupType, out var popup)) {
+                var instance = Instantiate(popup, transform);
                 _popupInstances.Add(popupType, instance);
                 return instance;
             }

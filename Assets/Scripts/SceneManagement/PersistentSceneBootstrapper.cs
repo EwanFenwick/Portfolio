@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using MyGameDevTools.SceneLoading;
+using MyGameDevTools.SceneLoading.UniTaskSupport;
 using Portfolio.AssetCollections;
 using UnityEngine;
 using Zenject;
@@ -18,7 +19,7 @@ namespace Portfolio.SceneManagement {
 		private async UniTask LoadGameScene() {
 			//load new scene
 			var sceneManager = new SceneManager();
-			var sceneLoader = new SceneLoaderAsync(sceneManager);
+			var sceneLoader = new SceneLoaderUniTask(sceneManager);
 
 			var gameSceneInfo = new LoadSceneInfoIndex(_sceneIndexLibrary.GetSceneIndex(SceneType.Game));
 			var loadingSceneInfo = new LoadSceneInfoIndex(_sceneIndexLibrary.GetSceneIndex(SceneType.Loading));

@@ -8,7 +8,7 @@ namespace Portfolio.Popups {
 
         #region Variables
 
-        [Inject] private PopupControllerView _popupControllerView;
+        [Inject] private readonly PopupControllerView _popupControllerView;
 
         private List<PopupRequest> _activePopups = new List<PopupRequest>();
         private Queue<PopupRequest> _popupQueue = new Queue<PopupRequest>();
@@ -66,7 +66,7 @@ namespace Portfolio.Popups {
             var newPopup = _popupQueue.Dequeue();
             _activePopups.Add(newPopup);
 
-            _popupControllerView.ShowPopup(newPopup.PopupType);
+            _popupControllerView.ShowPopup(newPopup);
         }
 
         private void OnActivePopupsChanged(int count) {

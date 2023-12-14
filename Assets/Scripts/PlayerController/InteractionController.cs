@@ -17,14 +17,14 @@ namespace Portfolio.PlayerController {
 
 
         private void OnEnable() {
-            _testPopupRequest = new DialoguePopupRequest(typeof(TestPopupView), "");
+            _testPopupRequest = new DialoguePopupRequest("");
 
             this.OnTriggerEnterAsObservable().Subscribe(other => CheckNewAgent(other));
             this.OnTriggerExitAsObservable().Subscribe(other => RemoveAgent(other));
         }
 
         public void OnInteraction() {
-            if (_currentDialogueAgent == null) {
+            if(_currentDialogueAgent == null) {
                 return;
             }
 
@@ -50,7 +50,7 @@ namespace Portfolio.PlayerController {
         }
 
         private void RemoveAgent(Collider other) {
-            if (_currentDialogueAgent != null && other.TryGetComponent<DialogueAgent>(out var x)) {
+            if(_currentDialogueAgent != null && other.TryGetComponent<DialogueAgent>(out var x)) {
                 
                 _currentDialogueAgent.CanInteract = false;
                 _currentDialogueAgent = null;
