@@ -41,7 +41,9 @@ namespace Portfolio.PlayerController {
         }
 
         private void ProcessInteraction() {
-            stateMachine.InteractionController.OnInteraction();
+            if (stateMachine.InteractionController.CanInteract) {
+                stateMachine.SwitchState(new PlayerDialogueState(stateMachine));
+            }
         }
     }
 }

@@ -4,40 +4,62 @@ using UniRx;
 using UnityEngine;
 using Zenject;
 using Portfolio.Dialogue;
+using System;
 
 namespace Portfolio.PlayerController {
     public class InteractionController : MonoBehaviour {
 
+        #region Variables
+
         [Inject] private readonly PopupController _popupController;
 
-        private bool _testPopupOpen = false;
+        private bool _dialoguePopupOpen = false;
         private DialoguePopupRequest _testPopupRequest;
 
         private DialogueAgent _currentDialogueAgent;
 
+        #endregion
+
+        #region Properties
+
+        public Action<bool> InteractionStateChanged { get; set; }
+        public bool CanInteract => _currentDialogueAgent != null;
+
+        #endregion
+
+        #region Lifecycle
 
         private void OnEnable() {
-            _testPopupRequest = new DialoguePopupRequest("");
-
             this.OnTriggerEnterAsObservable().Subscribe(other => CheckNewAgent(other));
             this.OnTriggerExitAsObservable().Subscribe(other => RemoveAgent(other));
         }
 
+        #endregion
+
+        #region Public Methods
+
         public void OnInteraction() {
-            if(_currentDialogueAgent == null) {
+            if(!CanInteract) {
                 return;
             }
 
-            _testPopupRequest.Dialogue = _currentDialogueAgent.GetDialogue();
-
-            if (_testPopupOpen) {
+            if (_dialoguePopupOpen) {
                 _popupController.ClosePopup(_testPopupRequest);
-                _testPopupOpen = false;
+                _dialoguePopupOpen = false;
             } else {
+                _testPopupRequest = new DialoguePopupRequest(
+                    _currentDialogueAgent.AgentName, _currentDialogueAgent.GetDialogue());
+
                 _popupController.RequestPopup(_testPopupRequest);
-                _testPopupOpen = true;
+                _dialoguePopupOpen = true;
             }
+
+            InteractionStateChanged?.Invoke(_dialoguePopupOpen);
         }
+
+        #endregion
+
+        #region Private Methods
 
         private void CheckNewAgent(Collider other) {
             if(other.TryGetComponent<DialogueAgent>(out var x)) {
@@ -51,10 +73,11 @@ namespace Portfolio.PlayerController {
 
         private void RemoveAgent(Collider other) {
             if(_currentDialogueAgent != null && other.TryGetComponent<DialogueAgent>(out var x)) {
-                
                 _currentDialogueAgent.CanInteract = false;
                 _currentDialogueAgent = null;
             }
         }
+
+        #endregion
     }
 }

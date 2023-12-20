@@ -27,6 +27,7 @@ namespace Portfolio.Popups {
                 return;
             }
 
+            request.ClosePopupAction = () => ClosePopup(request);
             _popupQueue.Enqueue(request);
         }
 

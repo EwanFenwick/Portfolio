@@ -172,3 +172,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe7faac3c5fe90d46bcae01de0a03b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _agentName: Test NPC
+  _dialogueIndicator: {fileID: 0}

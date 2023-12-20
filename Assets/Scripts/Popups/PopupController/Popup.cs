@@ -1,6 +1,8 @@
 using Cysharp.Threading.Tasks;
 using Portfolio.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
+using Zenject;
 
 namespace Portfolio.Popups {
     public abstract class Popup : MonoBehaviour {
@@ -9,6 +11,7 @@ namespace Portfolio.Popups {
 #pragma warning disable 0649
 
         [SerializeField] TweenController _openAnimation;
+        [SerializeField, Tooltip("Optional: for dismissable popups")] Button _closeButton;
 
 #pragma warning restore 0649
         #endregion
@@ -24,6 +27,8 @@ namespace Portfolio.Popups {
         public async UniTaskVoid Open(PopupRequest popupRequest) {
             _popupRequest = popupRequest;
             gameObject.SetActive(true);
+
+            ConfigureCloseButton();
 
             //call OnOpen before the opening animation
             OnPopupOpen(popupRequest);
@@ -42,9 +47,22 @@ namespace Portfolio.Popups {
             OnPopupClosed();
         }
 
+        private void ConfigureCloseButton() {
+            if (_closeButton == null) {
+                return;
+            }
+
+            _closeButton.gameObject.SetActive(_popupRequest.Dismissable);
+            _closeButton.onClick.AddListener(OnCloseClicked);
+        }
+
         #endregion
 
         #region Protected Methods
+
+        protected virtual void OnCloseClicked() {
+            _popupRequest.ClosePopupAction?.Invoke();
+        }
 
         protected abstract void OnPopupOpen(PopupRequest request);
 

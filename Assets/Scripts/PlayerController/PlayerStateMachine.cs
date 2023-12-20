@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 
 namespace Portfolio.PlayerController {
@@ -6,6 +7,15 @@ namespace Portfolio.PlayerController {
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(InteractionController))]
     public class PlayerStateMachine : StateMachine {
+
+        #region Editor Variables
+#pragma warning disable 0649
+
+        [SerializeField] private CinemachineFreeLook _cinemachineFreeLook;
+
+#pragma warning restore 0649
+        #endregion
+
         public Vector3 Velocity;
         public float MovementSpeed { get; private set; } = 5f;
         public float JumpForce { get; private set; } = 5f;
@@ -15,6 +25,7 @@ namespace Portfolio.PlayerController {
         public Animator Animator { get; private set; }
         public CharacterController Controller { get; private set; }
         public InteractionController InteractionController { get; set; }
+        public CinemachineFreeLook CinemachineFreeLook { get; set; }
 
         private void Start() {
             MainCamera = Camera.main.transform;
@@ -23,6 +34,7 @@ namespace Portfolio.PlayerController {
             Animator = GetComponent<Animator>();
             Controller = GetComponent<CharacterController>();
             InteractionController = GetComponent<InteractionController>();
+            CinemachineFreeLook = _cinemachineFreeLook;
 
             SwitchState(new PlayerMoveState(this));
         }

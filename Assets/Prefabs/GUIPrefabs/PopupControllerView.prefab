@@ -50,3 +50,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _popupPrefabs:
   - {fileID: 8258184280481903982, guid: 3248a198a75802a4989ce61c4e2856d7, type: 3}
+  - {fileID: 4224075998095000822, guid: 95579cfb888a70643a27e9624cdd62be, type: 3}
