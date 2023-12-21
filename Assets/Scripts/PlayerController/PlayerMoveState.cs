@@ -1,3 +1,5 @@
+using System;
+using Portfolio.EventBusSystem;
 using UnityEngine;
 
 namespace Portfolio.PlayerController {
@@ -15,8 +17,8 @@ namespace Portfolio.PlayerController {
 
             stateMachine.Animator.CrossFadeInFixedTime(MoveBlendTreeHash, CrossFadeDuration);
 
-            stateMachine.InputReader.OnJumpPerformed += SwitchToJumpState;
-            stateMachine.InputReader.OnInterationPerformed += ProcessInteraction;
+            stateMachine.EventBus.Subscribe<JumpPerformedEvent>(SwitchToJumpState);
+            stateMachine.EventBus.Subscribe<PausePlayerEvent>(SwitchToPausedState);
         }
 
         public override void Tick() {
@@ -32,17 +34,17 @@ namespace Portfolio.PlayerController {
         }
 
         public override void Exit() {
-            stateMachine.InputReader.OnJumpPerformed -= SwitchToJumpState;
-            stateMachine.InputReader.OnInterationPerformed -= ProcessInteraction;
+            stateMachine.EventBus.Unsubscribe<JumpPerformedEvent>(SwitchToJumpState);
+            stateMachine.EventBus.Unsubscribe<PausePlayerEvent>(SwitchToPausedState);
         }
 
-        private void SwitchToJumpState() {
+        private void SwitchToJumpState(object sender, EventArgs eventArgs) {
             stateMachine.SwitchState(new PlayerJumpState(stateMachine));
         }
 
-        private void ProcessInteraction() {
-            if (stateMachine.InteractionController.CanInteract) {
-                stateMachine.SwitchState(new PlayerDialogueState(stateMachine));
+        private void SwitchToPausedState(object sender, EventArgs eventArgs) {
+            if(((PausePlayerEvent)eventArgs).IsPaused) {
+                stateMachine.SwitchState(new PlayerPausedState(stateMachine));
             }
         }
     }

@@ -1,6 +1,8 @@
 using System;
+using Portfolio.EventBusSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 public class InputReader : MonoBehaviour, Controls.IPlayerActions {
 
@@ -9,31 +11,30 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions {
 	public Vector2 MouseDelta { get; set; }
 	public Vector2 MoveComposite { get; set; }
 
-	public Action OnJumpPerformed { get; set; }
-	public Action OnInterationPerformed { get; set; }
-
 	#endregion
 
-	#region Private Variables
+	#region Variables
 
-	private Controls controls;
+	[Inject] private readonly EventBus _eventBus;
+
+	private Controls _controls;
 
 	#endregion
 
 	#region Lifecycle
 
 	private void OnEnable() {
-		if(controls != null) {
+		if(_controls != null) {
 			return;
 		}
 
-		controls = new Controls();
-		controls.Player.SetCallbacks(this);
-		controls.Player.Enable();
+		_controls = new Controls();
+		_controls.Player.SetCallbacks(this);
+		_controls.Player.Enable();
 	}
 
 	private void OnDisable() {
-		controls.Player.Disable();
+		_controls.Player.Disable();
 	}
 
 	#endregion
@@ -53,7 +54,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions {
 			return;
 		}
 
-		OnJumpPerformed?.Invoke();
+		_eventBus.Publish(this, new JumpPerformedEvent());
 	}
 
     public void OnInteract(InputAction.CallbackContext context) {
@@ -61,7 +62,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions {
 			return;
 		}
 
-		OnInterationPerformed?.Invoke();
+		_eventBus.Publish(this, new InteractionPerformedEvent());
     }
 
     #endregion
