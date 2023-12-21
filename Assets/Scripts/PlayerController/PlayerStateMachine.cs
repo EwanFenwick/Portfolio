@@ -7,7 +7,6 @@ namespace Portfolio.PlayerController {
     [RequireComponent(typeof(InputReader))]
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(CharacterController))]
-    [RequireComponent(typeof(InteractionController))]
     public class PlayerStateMachine : StateMachine {
 
         #region Variables
@@ -26,8 +25,7 @@ namespace Portfolio.PlayerController {
         public InputReader InputReader { get; private set; }
         public Animator Animator { get; private set; }
         public CharacterController Controller { get; private set; }
-        public InteractionController InteractionController { get; set; }
-        public EventBus EventBus { get => _eventBus; }
+        public EventBus EventBus => _eventBus;
 
         #endregion
 
@@ -39,7 +37,6 @@ namespace Portfolio.PlayerController {
             InputReader = GetComponent<InputReader>();
             Animator = GetComponent<Animator>();
             Controller = GetComponent<CharacterController>();
-            InteractionController = GetComponent<InteractionController>();
 
             SwitchState(new PlayerMoveState(this));
         }
