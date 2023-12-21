@@ -15,7 +15,7 @@ namespace Portfolio.Dialogue {
         #region Properties
 
         public bool CanInteract { get; set; } //TODO: use for dialogue highlight/indicator later
-        public string AgentName { get => _agentName; }
+        public string AgentName => _agentName;
 
         #endregion
 
