@@ -28,6 +28,8 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions {
 			return;
 		}
 
+		Cursor.lockState = CursorLockMode.Locked;
+
 		_controls = new Controls();
 		_controls.Player.SetCallbacks(this);
 		_controls.Player.Enable();
@@ -64,6 +66,14 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions {
 
 		_eventBus.Publish(this, new InteractionPerformedEvent());
     }
+
+    public void OnAim(InputAction.CallbackContext context) {
+		if (!context.performed) {
+			return;
+		}
+
+		_eventBus.Publish(this, new ToggleAimEvent());
+	}
 
     #endregion
 }

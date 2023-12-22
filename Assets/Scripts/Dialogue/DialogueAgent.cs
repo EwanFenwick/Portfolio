@@ -1,3 +1,4 @@
+using Portfolio.Utilities;
 using UnityEngine;
 
 namespace Portfolio.Dialogue {
@@ -7,21 +8,28 @@ namespace Portfolio.Dialogue {
 #pragma warning disable 0649
 
         [SerializeField] private string _agentName;
-        [SerializeField] private GameObject _dialogueIndicator;
+        [SerializeField] private TextAsset _inkDialogueJSON;
+        [SerializeField] private LookAtTarget _dialogueIndicator;
 
 #pragma warning restore 0649
         #endregion
 
+        private bool _canInteract;
+
         #region Properties
 
-        public bool CanInteract { get; set; } //TODO: use for dialogue highlight/indicator later
         public string AgentName => _agentName;
+        public TextAsset Dialogue => _inkDialogueJSON;
 
         #endregion
 
         #region Public Methods
 
-        public string GetDialogue() => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac nisl massa. Pellentesque id magna odio. Nulla nec leo dui.\n\nMorbi nisl odio, pulvinar et quam scelerisque, sagittis viverra augue. Aliquam convallis tempus cursus.\n\nSuspendisse ullamcorper rutrum purus ac tincidunt.\nInteger in justo ut mauris gravida fringilla. \nPhasellus sodales, enim non molestie volutpat, ligula lacus laoreet ligula, nec eleifend odio velit quis justo.\n\nSed dictum erat non molestie efficitur.";
+        public void SetDialogueState(bool canInteract, Transform target) {
+            _dialogueIndicator.SetTarget(target);
+            _dialogueIndicator.gameObject.SetActive(canInteract);
+            _canInteract = canInteract;
+        }
 
         #endregion
     }

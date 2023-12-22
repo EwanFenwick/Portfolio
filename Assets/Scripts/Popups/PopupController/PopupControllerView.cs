@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Portfolio.EventBusSystem;
+using Zenject;
 
 namespace Portfolio.Popups {
     public class PopupControllerView : MonoBehaviour {
@@ -15,6 +17,8 @@ namespace Portfolio.Popups {
         #endregion
 
         #region Variables
+
+        [Inject] private readonly EventBus _eventBus;
 
         private readonly Dictionary<Type, Popup> _popupDictionary = new Dictionary<Type, Popup>();
         private readonly Dictionary<Type, Popup> _popupInstances = new Dictionary<Type, Popup>();
@@ -63,6 +67,7 @@ namespace Portfolio.Popups {
 
             if(_popupDictionary.TryGetValue(popupType, out var popup)) {
                 var instance = Instantiate(popup, transform);
+                instance.Initialise(_eventBus);
                 _popupInstances.Add(popupType, instance);
                 return instance;
             }

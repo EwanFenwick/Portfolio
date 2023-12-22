@@ -1,6 +1,9 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Ink.Runtime;
+using Portfolio.EventBusSystem;
+using System;
 
 namespace Portfolio.Popups {
     public class DialoguePopupView : Popup {
@@ -15,13 +18,30 @@ namespace Portfolio.Popups {
 #pragma warning restore 0649
         #endregion
 
+        private Story _currentStory;
+
         protected override void OnPopupOpen(PopupRequest request) {
             var dialogueRequest = GetPopupRequest<DialoguePopupRequest>();
 
             _speakerText.text = dialogueRequest.Speaker;
-            _dialogueText.text = dialogueRequest.Dialogue;
+            _currentStory = dialogueRequest.Story;
+
+            StartStory();
 
             _dialogueScollView.verticalNormalizedPosition = 1f;
+
+            _eventBus.Subscribe<DialogueContinuedEvent>(ContinueStory);
+
+            void StartStory() {
+                _dialogueText.text = _currentStory.Continue();
+            }
         }
+
+        protected override void OnPopupClosed() {
+            _eventBus.Unsubscribe<DialogueContinuedEvent>(ContinueStory);
+            base.OnPopupClosed();
+        }
+
+        private void ContinueStory(object sender, EventArgs eventArgs) => _dialogueText.text = ((DialogueContinuedEvent)eventArgs).NextDialogueLine;
     }
 }

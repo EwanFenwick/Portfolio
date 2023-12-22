@@ -17,7 +17,7 @@ namespace Portfolio.Popups {
         protected override void OnPopupOpen(PopupRequest request) {
             var dialogueRequest = GetPopupRequest<DialoguePopupRequest>();
 
-            _titleText.text = dialogueRequest.Dialogue;
+            //_titleText.text = dialogueRequest.Dialogue;
         }
 
         #endregion

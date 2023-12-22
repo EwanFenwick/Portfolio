@@ -1,23 +1,30 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Portfolio.EventBusSystem;
 using UniRx;
-using Zenject;
 
 namespace Portfolio.Popups {
     public class PopupController {
 
         #region Variables
 
-        [Inject] private readonly PopupControllerView _popupControllerView;
+        private readonly PopupControllerView _popupControllerView;
+        private readonly EventBus _eventBus;
 
         private List<PopupRequest> _activePopups = new List<PopupRequest>();
         private Queue<PopupRequest> _popupQueue = new Queue<PopupRequest>();
 
         #endregion
 
-        public PopupController() {
+        public PopupController(EventBus eventBus, PopupControllerView popupControllerView) {
+            _eventBus = eventBus;
+            _popupControllerView = popupControllerView;
+
             _activePopups.ObserveEveryValueChanged(x => x.Count).Subscribe(OnActivePopupsChanged);
             _popupQueue.ObserveEveryValueChanged(x => x.Count).Subscribe(OnPopupQueueChanged);
+
+            _eventBus.Subscribe<ClosePopupEvent>(OnCloseRequested);
         }
 
         #region Public Methods
@@ -27,7 +34,6 @@ namespace Portfolio.Popups {
                 return;
             }
 
-            request.ClosePopupAction = () => ClosePopup(request);
             _popupQueue.Enqueue(request);
         }
 
@@ -42,6 +48,10 @@ namespace Portfolio.Popups {
                 _activePopups.RemoveAll(x => x.PopupType == request.PopupType);
                 _activePopups.TrimExcess();
             }
+
+            if(request.PausePlayerControl) {
+                FirePlayerPauseEvent(false);
+            }
         }
 
         public void CloseAllPopups(bool clearQueue = false) {
@@ -53,21 +63,34 @@ namespace Portfolio.Popups {
             _activePopups.TrimExcess();
 
             _popupControllerView.CloseAllPopups();
+            FirePlayerPauseEvent(false);
         }
 
         #endregion
 
         #region Private Methods
 
+        private void OnCloseRequested(object sender, EventArgs eventArgs) {
+            ClosePopup(((ClosePopupEvent)eventArgs).Request);
+        }
+
         private void TryOpenNextPopup() {
             if(_activePopups.Any(p => p.Dismissable == false)) {
                 return;
             }
 
-            var newPopup = _popupQueue.Dequeue();
-            _activePopups.Add(newPopup);
+            var popupRequest = _popupQueue.Dequeue();
+            _activePopups.Add(popupRequest);
 
-            _popupControllerView.ShowPopup(newPopup);
+            _popupControllerView.ShowPopup(popupRequest);
+
+            if(popupRequest.PausePlayerControl) {
+                FirePlayerPauseEvent(true);
+            }
+        }
+
+        private void FirePlayerPauseEvent(bool isPaused) {
+            _eventBus.Publish(this, new PausePlayerEvent(isPaused));
         }
 
         private void OnActivePopupsChanged(int count) {

@@ -1,8 +1,9 @@
 using Cysharp.Threading.Tasks;
+using Portfolio.EventBusSystem;
 using Portfolio.Tweening;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 namespace Portfolio.Popups {
     public abstract class Popup : MonoBehaviour {
@@ -18,7 +19,17 @@ namespace Portfolio.Popups {
 
         #region Variables
 
+        protected EventBus _eventBus;
+
         private PopupRequest _popupRequest;
+
+        #endregion
+
+        #region Lifecycle
+
+        public virtual void Initialise(EventBus eventBus) {
+            _eventBus = eventBus;
+        }
 
         #endregion
 
@@ -47,22 +58,9 @@ namespace Portfolio.Popups {
             OnPopupClosed();
         }
 
-        private void ConfigureCloseButton() {
-            if (_closeButton == null) {
-                return;
-            }
-
-            _closeButton.gameObject.SetActive(_popupRequest.Dismissable);
-            _closeButton.onClick.AddListener(OnCloseClicked);
-        }
-
         #endregion
 
         #region Protected Methods
-
-        protected virtual void OnCloseClicked() {
-            _popupRequest.ClosePopupAction?.Invoke();
-        }
 
         protected abstract void OnPopupOpen(PopupRequest request);
 
@@ -71,8 +69,28 @@ namespace Portfolio.Popups {
             gameObject.SetActive(false);
         }
 
-        protected T GetPopupRequest<T>()
-            where T : PopupRequest => (T)_popupRequest;
+        protected virtual void OnCloseClicked() {
+            _eventBus.Publish(this, new ClosePopupEvent(_popupRequest));
+        }
+
+        protected T GetPopupRequest<T>() where T : PopupRequest => (T)_popupRequest;
+
+        #endregion
+
+        #region Private Methods
+
+        private void ConfigureCloseButton() {
+            if (_closeButton == null) {
+                return;
+            }
+
+            if (_popupRequest.Dismissable) {
+                _closeButton.onClick.AsObservable().Subscribe(x => OnCloseClicked());
+                //_closeButton.onClick.AddListener(OnCloseClicked);
+            }
+
+            _closeButton.gameObject.SetActive(_popupRequest.Dismissable);
+        }
 
         #endregion
     }
