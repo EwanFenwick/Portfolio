@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 429190279145533332}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15086423, y: -0.000000008504723, z: 0.0000000012979137, w: 0.98855454}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -473,7 +473,6 @@ GameObject:
   - component: {fileID: 5891015080140857336}
   - component: {fileID: 7380017871479669775}
   - component: {fileID: 7544914943384240859}
-  - component: {fileID: 3069393695493710061}
   m_Layer: 0
   m_Name: FreeLook Camera
   m_TagString: Untagged
@@ -665,34 +664,6 @@ MonoBehaviour:
   m_Offset: {x: 0.6, y: 0, z: 0}
   m_ApplyAfter: 1
   m_PreserveComposition: 0
---- !u!114 &3069393695493710061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7772195272439564183}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47d4ed5f87dfeb74bb59805659f0974b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _invertBool: 1
-  _uniEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8660281823803389762}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &7840827887183673025
 GameObject:
   m_ObjectHideFlags: 3
@@ -718,7 +689,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7840827887183673025}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15086423, y: -0.000000008504723, z: 0.0000000012979137, w: 0.98855454}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -797,7 +768,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8116505278766639321}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15086423, y: 0.0000000085047756, z: -0.0000000012979219, w: 0.98855454}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

@@ -1,15 +1,16 @@
 using System;
+using Portfolio.EventBusSystem;
 
 namespace Portfolio.Popups {
     public class PopupRequest {
         public Type PopupType { get; }
         public bool Dismissable { get; }
-        public bool PausePlayerControl { get; set; }
+        public PauseEventType PauseEventType { get; set; }
 
-        public PopupRequest(Type popupType, bool dismissable = true, bool pausePlayerInput = false) {
+        public PopupRequest(Type popupType, bool dismissable = true, PauseEventType pauseEventType = PauseEventType.None) {
             PopupType = popupType;
             Dismissable = dismissable;
-            PausePlayerControl = pausePlayerInput;
+            PauseEventType = pauseEventType;
         }
     }
 }

@@ -49,8 +49,8 @@ namespace Portfolio.Popups {
                 _activePopups.TrimExcess();
             }
 
-            if(request.PausePlayerControl) {
-                FirePlayerPauseEvent(false);
+            if(request.PauseEventType != PauseEventType.None) {
+                FirePlayerPauseEvent(PauseEventType.Unpause);
             }
         }
 
@@ -63,7 +63,6 @@ namespace Portfolio.Popups {
             _activePopups.TrimExcess();
 
             _popupControllerView.CloseAllPopups();
-            FirePlayerPauseEvent(false);
         }
 
         #endregion
@@ -84,14 +83,12 @@ namespace Portfolio.Popups {
 
             _popupControllerView.ShowPopup(popupRequest);
 
-            if(popupRequest.PausePlayerControl) {
-                FirePlayerPauseEvent(true);
+            if(popupRequest.PauseEventType != PauseEventType.None) {
+                FirePlayerPauseEvent(popupRequest.PauseEventType);
             }
         }
 
-        private void FirePlayerPauseEvent(bool isPaused) {
-            _eventBus.Publish(this, new PausePlayerEvent(isPaused));
-        }
+        private void FirePlayerPauseEvent(PauseEventType pauseType) => _eventBus.Publish(this, new PausePlayerEvent(pauseType));
 
         private void OnActivePopupsChanged(int count) {
             if(count == 0 && _popupQueue.Count > 0) {

@@ -2,10 +2,10 @@ using System;
 
 namespace Portfolio.EventBusSystem {
     public class PausePlayerEvent : EventArgs {
-        public bool IsPaused { get; private set; }
+        public PauseEventType PauseType { get; private set; }
 
-        public PausePlayerEvent(bool isPaused) {
-            IsPaused = isPaused;
+        public PausePlayerEvent(PauseEventType pauseType) {
+            PauseType = pauseType;
         }
     }
 }

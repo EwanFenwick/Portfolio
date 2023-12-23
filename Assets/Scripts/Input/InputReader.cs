@@ -1,4 +1,3 @@
-using System;
 using Portfolio.EventBusSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -68,11 +67,11 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions {
     }
 
     public void OnAim(InputAction.CallbackContext context) {
-		if (!context.performed) {
+		if(!context.performed) {
 			return;
 		}
 
-		_eventBus.Publish(this, new ToggleAimEvent());
+		_eventBus.Publish(this, new AimPerformedEvent());
 	}
 
     #endregion

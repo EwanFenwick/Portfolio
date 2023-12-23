@@ -1,5 +1,5 @@
 using System;
 
 namespace Portfolio.EventBusSystem {
-    public class ToggleAimEvent : EventArgs { }
+    public class AimPerformedEvent : EventArgs { }
 }

@@ -13,16 +13,17 @@ namespace Portfolio.PlayerController {
         public PlayerMoveState(PlayerStateMachine stateMachine) : base(stateMachine) { }
 
         public override void Enter() {
+            stateMachine.EventBus.Subscribe<AimPerformedEvent>(SwitchToAimState);
+            stateMachine.EventBus.Subscribe<JumpPerformedEvent>(SwitchToJumpState);
+            stateMachine.EventBus.Subscribe<PausePlayerEvent>(SwitchToPausedState);
+
             stateMachine.Velocity.y = Physics.gravity.y;
 
             stateMachine.Animator.CrossFadeInFixedTime(MoveBlendTreeHash, CrossFadeDuration);
-
-            stateMachine.EventBus.Subscribe<JumpPerformedEvent>(SwitchToJumpState);
-            stateMachine.EventBus.Subscribe<PausePlayerEvent>(SwitchToPausedState);
         }
 
         public override void Tick() {
-            if (!stateMachine.Controller.isGrounded) {
+            if(!stateMachine.Controller.isGrounded) {
                 stateMachine.SwitchState(new PlayerFallState(stateMachine));
             }
 
@@ -34,6 +35,7 @@ namespace Portfolio.PlayerController {
         }
 
         public override void Exit() {
+            stateMachine.EventBus.Unsubscribe<AimPerformedEvent>(SwitchToAimState);
             stateMachine.EventBus.Unsubscribe<JumpPerformedEvent>(SwitchToJumpState);
             stateMachine.EventBus.Unsubscribe<PausePlayerEvent>(SwitchToPausedState);
         }
@@ -43,9 +45,18 @@ namespace Portfolio.PlayerController {
         }
 
         private void SwitchToPausedState(object sender, EventArgs eventArgs) {
-            if(((PausePlayerEvent)eventArgs).IsPaused) {
-                stateMachine.SwitchState(new PlayerPausedState(stateMachine));
+            switch(((PausePlayerEvent)eventArgs).PauseType) {
+                case PauseEventType.Dialogue:
+                    stateMachine.SwitchState(new PlayerDialogueState(stateMachine));
+                    break;
+                
+                default:
+                    break;
             }
+        }
+
+        private void SwitchToAimState(object sender, EventArgs eventArgs) {
+            stateMachine.SwitchState(new PlayerAimState(stateMachine));
         }
     }
 }

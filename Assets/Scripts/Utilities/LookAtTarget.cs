@@ -42,7 +42,6 @@ namespace Portfolio.Utilities {
         }
 
         public void EndFollowing() {
-            Debug.Log("end following called");
             _cancelToken?.Cancel();
             _target = _nullOnDisable ? null : _target;
         }

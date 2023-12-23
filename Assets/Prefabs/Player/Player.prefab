@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3894270872326582117}
   m_Layer: 0
-  m_Name: CamerLookAtPoint
+  m_Name: CameraLookAtPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,6 +108,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 78e04d8796ce7b04d9bbdaca27072d88, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3597142718899085842}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 78e04d8796ce7b04d9bbdaca27072d88, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8856381967092963885}
   m_SourcePrefab: {fileID: 100100000, guid: 78e04d8796ce7b04d9bbdaca27072d88, type: 3}
 --- !u!1 &8644337006209590515 stripped
 GameObject:
@@ -210,9 +213,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2040969bee91dac4faeb5d38843d53d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainCam: {fileID: 0}
-  _aimCam: {fileID: 0}
-  _targetingReticle: {fileID: 0}
+  _OnEnteredEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _OnExitedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8856381967092963885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8644337006209590515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47d4ed5f87dfeb74bb59805659f0974b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _OnEnteredEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _OnExitedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &8988351536062185033 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 78e04d8796ce7b04d9bbdaca27072d88, type: 3}
