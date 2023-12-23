@@ -59,10 +59,16 @@ namespace Portfolio.Popups {
                 _popupQueue.Clear();
             }
 
+            var wasPaused = _activePopups.Any(x => x.PauseEventType != PauseEventType.None);
+
             _activePopups.Clear();
             _activePopups.TrimExcess();
 
             _popupControllerView.CloseAllPopups();
+
+            if(wasPaused) {
+                FirePlayerPauseEvent(PauseEventType.Unpause);
+            }
         }
 
         #endregion
