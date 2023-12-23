@@ -1,21 +1,71 @@
 using System;
+using System.Collections;
 using System.Threading;
-using Cysharp.Threading.Tasks;
+using UniRx;
 using UnityEngine;
 
 namespace Portfolio.Utilities {
     public class LookAtTarget : MonoBehaviour {
-        [SerializeField] private float _rotationSpeed;
-        [SerializeField] private Transform _target;
 
-        private CancellationTokenSource cancelToken;
+        #region Editor Variables
+#pragma warning disable 0649
 
-        private void OnEnable() {
-            if(_target != null) {
-                LookAtTargetImmediate();
+        [SerializeField, Range(0.1f, 10f)] private float _rotationSpeed;
+        [SerializeField] protected Transform _target;
+
+#pragma warning restore 0649
+        #endregion
+
+        #region Variables
+
+        private CancellationTokenSource _cancelToken;
+        protected bool _nullOnDisable = true;
+
+        #endregion
+
+        #region Public Methods
+
+        public void SetAndFollowTarget(Transform target) {
+            if(SetTarget(target)) {
                 FollowTarget();
             }
+
+            bool SetTarget(Transform target) {
+                if(target == null) {
+                    EndFollowing();
+                    return false;
+                }
+
+                _target = target;
+                return true;
+            }
         }
+
+        public void EndFollowing() {
+            Debug.Log("end following called");
+            _cancelToken?.Cancel();
+            _target = _nullOnDisable ? null : _target;
+        }
+
+        #endregion
+
+        #region Protected Methods
+
+        protected void FollowTarget() {
+            if(_target == null) {
+                return;
+            }
+
+            _cancelToken = new CancellationTokenSource();
+
+            LookAtTargetImmediate();
+
+            MainThreadDispatcher.StartUpdateMicroCoroutine(FollowTargetSmoothly(_cancelToken.Token));
+        }
+
+        #endregion
+
+        #region Private Methods
 
         private void LookAtTargetImmediate() {
             GetLookRotation(out var currentRot, out var newRot);
@@ -24,58 +74,34 @@ namespace Portfolio.Utilities {
             transform.rotation = Quaternion.Lerp(currentRot, newRot, 1f);
         }
 
-        private void OnDisable() {
-            cancelToken?.Cancel();
-            _target = null;
-        }
-
-        public bool SetTarget(Transform target) {
-            if(target == null) {
-                cancelToken?.Cancel();
-                return false;
-            }
-
-            _target = target;
-            return true;
-        }
-
-        public void SetAndFollowTarget(Transform target) {
-            if(SetTarget(target)) {
-                FollowTarget();
-            }
-        }
-
-        private void FollowTarget() {
-            if(_target == null) {
-                return;
-            }
-
-            cancelToken = new CancellationTokenSource();
-            
-            LookAtTargetImmediate();
-            FollowTargetSmoothly().Forget();
-        }
-
-        private async UniTask FollowTargetSmoothly() {
+        private IEnumerator FollowTargetSmoothly(CancellationToken cancellationToken) {
             GetLookRotation(out var currentRot, out var newRot);
 
             float counter = 0;
-            while(counter < _rotationSpeed) {
-                cancelToken.Token.ThrowIfCancellationRequested();
+            while(counter <= _rotationSpeed) {
+                if(cancellationToken.IsCancellationRequested) {
+                    break;
+                }
 
                 counter += Time.deltaTime;
                 transform.rotation = Quaternion.Lerp(currentRot, newRot, counter / _rotationSpeed);
 
-                await UniTask.DelayFrame(1, cancellationToken: cancelToken.Token);
-            }
+                //loop
+                if(counter >= _rotationSpeed) {
+                    counter = 0;
+                    GetLookRotation(out currentRot, out newRot);
+                }
 
-            FollowTargetSmoothly().Forget();
+                yield return null;
+            }
         }
 
         private void GetLookRotation(out Quaternion currentRot, out Quaternion newRot) {
             currentRot = transform.rotation;
-            var targetposition = new Vector3(_target.position.x, transform.position.y, _target.position.z); //remove y-axis rotation
+            var targetposition = new Vector3(_target.position.x, transform.position.y, _target.position.z); //remove y-axis from rotation
             newRot = Quaternion.LookRotation(targetposition - transform.position, transform.TransformDirection(Vector3.up));
         }
+
+        #endregion
     }
 }

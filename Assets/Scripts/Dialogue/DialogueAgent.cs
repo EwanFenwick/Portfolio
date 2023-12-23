@@ -14,8 +14,6 @@ namespace Portfolio.Dialogue {
 #pragma warning restore 0649
         #endregion
 
-        private bool _canInteract;
-
         #region Properties
 
         public string AgentName => _agentName;
@@ -25,10 +23,14 @@ namespace Portfolio.Dialogue {
 
         #region Public Methods
 
-        public void SetDialogueState(bool canInteract, Transform target) {
-            _dialogueIndicator.SetTarget(target);
-            _dialogueIndicator.gameObject.SetActive(canInteract);
-            _canInteract = canInteract;
+        public void EnableDialogue(Transform target) {
+            _dialogueIndicator.gameObject.SetActive(true);
+            _dialogueIndicator.SetAndFollowTarget(target);
+        }
+
+        public void DisableDialogue() {
+            _dialogueIndicator.gameObject.SetActive(false);
+            _dialogueIndicator.EndFollowing();
         }
 
         #endregion

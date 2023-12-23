@@ -84,16 +84,16 @@ namespace Portfolio.PlayerController {
         private void CheckNewAgent(Collider other) {
             if(other.TryGetComponent<DialogueAgent>(out var agent)) {
                 if (_dialogueAgent != null) {
-                    _dialogueAgent.SetDialogueState(false, null);
+                    _dialogueAgent.DisableDialogue();
                 }
                 _dialogueAgent = agent;
-                _dialogueAgent.SetDialogueState(true, transform);
+                _dialogueAgent.EnableDialogue(transform);
             }
         }
 
         private void RemoveAgent(Collider other) {
             if(_dialogueAgent != null && other.TryGetComponent<DialogueAgent>(out var x)) {
-                _dialogueAgent.SetDialogueState(false, null);
+                _dialogueAgent.DisableDialogue();
                 _dialogueAgent = null;
             }
         }
