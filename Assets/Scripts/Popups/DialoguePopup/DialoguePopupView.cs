@@ -14,6 +14,8 @@ namespace Portfolio.Popups {
         [SerializeField] private TextMeshProUGUI _speakerText;
         [SerializeField] private TextMeshProUGUI _dialogueText;
         [SerializeField] private ScrollRect _dialogueScollView;
+        [SerializeField] private DialogueChoiceView _dialogueChoicePrefab;
+        [SerializeField] private GameObject _dialogueChoiceIndicator;
 
 #pragma warning restore 0649
         #endregion

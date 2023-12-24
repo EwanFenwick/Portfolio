@@ -161,10 +161,11 @@ GameObject:
   m_Component:
   - component: {fileID: 9013047330998210797}
   - component: {fileID: 2767474749988140396}
+  - component: {fileID: 669371411121693304}
   - component: {fileID: 1017324807149978515}
   - component: {fileID: 6328803528085192373}
   m_Layer: 5
-  m_Name: DialogueChoice
+  m_Name: DialogueChoiceView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -198,6 +199,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7863860151773157032}
   m_CullTransparentMesh: 1
+--- !u!114 &669371411121693304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7863860151773157032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 452d0e8d3a8dc3245a93b9e60a322d20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _choiceText: {fileID: 8585591615028335388}
 --- !u!114 &1017324807149978515
 MonoBehaviour:
   m_ObjectHideFlags: 0
