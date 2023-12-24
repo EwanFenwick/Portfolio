@@ -13,6 +13,7 @@ namespace Portfolio.PlayerController {
             _stateMachine.EventBus.Subscribe<PausePlayerEvent>(CheckForUnpause);
 
             _stateMachine.Animator.CrossFadeInFixedTime(_settings.MoveBlendTreeHash, _settings.CrossFadeDuration);
+            Cursor.lockState = CursorLockMode.Confined;
         }
 
         public override void Tick() {

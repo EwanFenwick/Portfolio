@@ -5,7 +5,7 @@ namespace Portfolio.PlayerController {
         
         #region Variables
 
-        protected readonly AnimationSettings _settings;
+        protected readonly AnimationSettings _settings = new AnimationSettings();
         protected readonly PlayerStateMachine _stateMachine;
 
         #endregion
