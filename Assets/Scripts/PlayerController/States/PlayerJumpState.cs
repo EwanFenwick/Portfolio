@@ -3,22 +3,21 @@ using UnityEngine;
 namespace Portfolio.PlayerController {
     public class PlayerJumpState : PlayerBaseState {
 
-        private readonly int JumpHash = Animator.StringToHash("Jump");
-        private const float CrossFadeDuration = 0.1f;
-
         public PlayerJumpState(PlayerStateMachine stateMachine) : base(stateMachine) { }
+        
+        #region Public Methods
 
         public override void Enter() {
-            stateMachine.Velocity = new Vector3(stateMachine.Velocity.x, stateMachine.JumpForce, stateMachine.Velocity.z);
+            _stateMachine.Velocity = new Vector3(_stateMachine.Velocity.x, _stateMachine.JumpForce, _stateMachine.Velocity.z);
 
-            stateMachine.Animator.CrossFadeInFixedTime(JumpHash, CrossFadeDuration);
+            _stateMachine.Animator.CrossFadeInFixedTime(_settings.JumpHash, _settings.CrossFadeDuration);
         }
 
         public override void Tick() {
             ApplyGravity();
 
-            if(stateMachine.Velocity.y <= 0f) {
-                stateMachine.SwitchState(new PlayerFallState(stateMachine));
+            if(_stateMachine.Velocity.y <= 0f) {
+                _stateMachine.SwitchState(new PlayerFallState(_stateMachine));
             }
 
             FaceMoveDirection();
@@ -26,5 +25,7 @@ namespace Portfolio.PlayerController {
         }
 
         public override void Exit() { }
+
+        #endregion
     }
 }

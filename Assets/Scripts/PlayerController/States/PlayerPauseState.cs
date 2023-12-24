@@ -4,32 +4,23 @@ using UnityEngine;
 
 namespace Portfolio.PlayerController {
     public abstract class PlayerPauseState : PlayerBaseState {
-        
-        #region Variables
 
-        private readonly int MoveSpeedHash = Animator.StringToHash("MoveSpeed");
-        private readonly int MoveBlendTreeHash = Animator.StringToHash("MoveBlendTree");
-        private const float AnimationDampTime = 0.1f;
-        private const float CrossFadeDuration = 0.1f;
-
-        #endregion
-        
         protected PlayerPauseState(PlayerStateMachine stateMachine) : base(stateMachine) { }
 
         #region Public Methods
 
         public override void Enter() {
-            stateMachine.EventBus.Subscribe<PausePlayerEvent>(CheckForUnpause);
+            _stateMachine.EventBus.Subscribe<PausePlayerEvent>(CheckForUnpause);
 
-            stateMachine.Animator.CrossFadeInFixedTime(MoveBlendTreeHash, CrossFadeDuration);
+            _stateMachine.Animator.CrossFadeInFixedTime(_settings.MoveBlendTreeHash, _settings.CrossFadeDuration);
         }
 
         public override void Tick() {
-            stateMachine.Animator.SetFloat(MoveSpeedHash, 0f, AnimationDampTime, Time.deltaTime);
+            _stateMachine.Animator.SetFloat(_settings.MoveSpeedHash, 0f, _settings.AnimationDampTime, Time.deltaTime);
         }
 
         public override void Exit() {
-            stateMachine.EventBus.Unsubscribe<PausePlayerEvent>(CheckForUnpause);
+            _stateMachine.EventBus.Unsubscribe<PausePlayerEvent>(CheckForUnpause);
         }
 
         #endregion
@@ -42,7 +33,7 @@ namespace Portfolio.PlayerController {
                 return;
             }
 
-            stateMachine.SwitchState(new PlayerMoveState(stateMachine));
+            _stateMachine.SwitchState(new PlayerMoveState(_stateMachine));
         }
 
         #endregion

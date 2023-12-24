@@ -5,49 +5,50 @@ using UnityEngine;
 namespace Portfolio.PlayerController {
     public class PlayerMoveState : PlayerBaseState {
 
-        private readonly int MoveSpeedHash = Animator.StringToHash("MoveSpeed");
-        private readonly int MoveBlendTreeHash = Animator.StringToHash("MoveBlendTree");
-        private const float AnimationDampTime = 0.1f;
-        private const float CrossFadeDuration = 0.1f;
-
         public PlayerMoveState(PlayerStateMachine stateMachine) : base(stateMachine) { }
 
+        #region Public Methods
+
         public override void Enter() {
-            stateMachine.EventBus.Subscribe<AimPerformedEvent>(SwitchToAimState);
-            stateMachine.EventBus.Subscribe<JumpPerformedEvent>(SwitchToJumpState);
-            stateMachine.EventBus.Subscribe<PausePlayerEvent>(SwitchToPausedState);
+            _stateMachine.EventBus.Subscribe<AimPerformedEvent>(SwitchToAimState);
+            _stateMachine.EventBus.Subscribe<JumpPerformedEvent>(SwitchToJumpState);
+            _stateMachine.EventBus.Subscribe<PausePlayerEvent>(SwitchToPausedState);
 
-            stateMachine.Velocity.y = Physics.gravity.y;
+            _stateMachine.Velocity.y = Physics.gravity.y;
 
-            stateMachine.Animator.CrossFadeInFixedTime(MoveBlendTreeHash, CrossFadeDuration);
+            _stateMachine.Animator.CrossFadeInFixedTime(_settings.MoveBlendTreeHash, _settings.CrossFadeDuration);
         }
 
         public override void Tick() {
-            if(!stateMachine.Controller.isGrounded) {
-                stateMachine.SwitchState(new PlayerFallState(stateMachine));
+            if(!_stateMachine.Controller.isGrounded) {
+                _stateMachine.SwitchState(new PlayerFallState(_stateMachine));
             }
 
             CalculateMoveDirection();
             FaceMoveDirection();
             Move();
 
-            stateMachine.Animator.SetFloat(MoveSpeedHash, stateMachine.InputReader.MoveComposite.sqrMagnitude > 0f ? 1f : 0f, AnimationDampTime, Time.deltaTime);
+            _stateMachine.Animator.SetFloat(_settings.MoveSpeedHash, _stateMachine.InputReader.MoveComposite.sqrMagnitude > 0f ? 1f : 0f, _settings.AnimationDampTime, Time.deltaTime);
         }
 
         public override void Exit() {
-            stateMachine.EventBus.Unsubscribe<AimPerformedEvent>(SwitchToAimState);
-            stateMachine.EventBus.Unsubscribe<JumpPerformedEvent>(SwitchToJumpState);
-            stateMachine.EventBus.Unsubscribe<PausePlayerEvent>(SwitchToPausedState);
+            _stateMachine.EventBus.Unsubscribe<AimPerformedEvent>(SwitchToAimState);
+            _stateMachine.EventBus.Unsubscribe<JumpPerformedEvent>(SwitchToJumpState);
+            _stateMachine.EventBus.Unsubscribe<PausePlayerEvent>(SwitchToPausedState);
         }
 
+        #endregion
+
+        #region Private Methods
+
         private void SwitchToJumpState(object sender, EventArgs eventArgs) {
-            stateMachine.SwitchState(new PlayerJumpState(stateMachine));
+            _stateMachine.SwitchState(new PlayerJumpState(_stateMachine));
         }
 
         private void SwitchToPausedState(object sender, EventArgs eventArgs) {
             switch(((PausePlayerEvent)eventArgs).PauseType) {
                 case PauseEventType.Dialogue:
-                    stateMachine.SwitchState(new PlayerDialogueState(stateMachine));
+                    _stateMachine.SwitchState(new PlayerDialogueState(_stateMachine));
                     break;
                 
                 default:
@@ -56,7 +57,9 @@ namespace Portfolio.PlayerController {
         }
 
         private void SwitchToAimState(object sender, EventArgs eventArgs) {
-            stateMachine.SwitchState(new PlayerAimState(stateMachine));
+            _stateMachine.SwitchState(new PlayerAimState(_stateMachine));
         }
+
+        #endregion
     }
 }

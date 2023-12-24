@@ -3,23 +3,20 @@ using UnityEngine;
 namespace Portfolio.PlayerController {
     public class PlayerFallState : PlayerBaseState {
 
-        private readonly int FallHash = Animator.StringToHash("Fall");
-        private const float CrossFadeDuration = 0.1f;
-
         public PlayerFallState(PlayerStateMachine stateMachine) : base(stateMachine) { }
 
         public override void Enter() {
-            stateMachine.Velocity.y = 0f;
+            _stateMachine.Velocity.y = 0f;
 
-            stateMachine.Animator.CrossFadeInFixedTime(FallHash, CrossFadeDuration);
+            _stateMachine.Animator.CrossFadeInFixedTime(_settings.FallHash, _settings.CrossFadeDuration);
         }
 
         public override void Tick() {
             ApplyGravity();
             Move();
 
-            if(stateMachine.Controller.isGrounded) {
-                stateMachine.SwitchState(new PlayerMoveState(stateMachine));
+            if(_stateMachine.Controller.isGrounded) {
+                _stateMachine.SwitchState(new PlayerMoveState(_stateMachine));
             }
         }
 
