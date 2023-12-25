@@ -24,7 +24,6 @@ namespace Portfolio.PlayerController {
 
         #region Properties
 
-        public Action<string> ContinueDialogue { get; set; }
         public bool CanInteract => _dialogueAgent != null;
 
         #endregion
@@ -32,8 +31,8 @@ namespace Portfolio.PlayerController {
         #region Lifecycle
 
         private void OnEnable() {
-            this.OnTriggerEnterAsObservable().Subscribe(other => CheckNewAgent(other));
-            this.OnTriggerExitAsObservable().Subscribe(other => RemoveAgent(other));
+            this.OnTriggerEnterAsObservable().Subscribe(other => CheckNewAgent(other)).AddTo(this);
+            this.OnTriggerExitAsObservable().Subscribe(other => RemoveAgent(other)).AddTo(this);
 
             _eventBus.Subscribe<InteractionPerformedEvent>(OnInteractionPerformed);
         }

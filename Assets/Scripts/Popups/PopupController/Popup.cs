@@ -80,12 +80,12 @@ namespace Portfolio.Popups {
         #region Private Methods
 
         private void ConfigureCloseButton() {
-            if (_closeButton == null) {
+            if(_closeButton == null) {
                 return;
             }
 
-            if (_popupRequest.Dismissable) {
-                _closeButton.onClick.AsObservable().Subscribe(x => OnCloseClicked());
+            if(_popupRequest.Dismissable) {
+                _closeButton.onClick.AsObservable().Subscribe(x => OnCloseClicked()).AddTo(this);
                 //_closeButton.onClick.AddListener(OnCloseClicked);
             }
 
