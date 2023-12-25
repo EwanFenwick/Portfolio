@@ -17,6 +17,8 @@ namespace Portfolio.PlayerController {
             _stateMachine.Velocity.y = Physics.gravity.y;
 
             _stateMachine.Animator.CrossFadeInFixedTime(_settings.MoveBlendTreeHash, _settings.CrossFadeDuration);
+
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         public override void Tick() {

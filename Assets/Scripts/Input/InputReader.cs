@@ -26,9 +26,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions {
 		if(_controls != null) {
 			return;
 		}
-
-		Cursor.lockState = CursorLockMode.Locked;
-
+		
 		_controls = new Controls();
 		_controls.Player.SetCallbacks(this);
 		_controls.Player.Enable();
