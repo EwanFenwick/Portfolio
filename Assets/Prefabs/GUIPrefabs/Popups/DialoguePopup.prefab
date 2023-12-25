@@ -200,7 +200,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5558102722413799130
 RectTransform:
   m_ObjectHideFlags: 0
@@ -919,6 +919,7 @@ MonoBehaviour:
   _speakerText: {fileID: 5496890480571041742}
   _dialogueText: {fileID: 48998533960338380}
   _dialogueScollView: {fileID: 5798405129950252770}
+  _dialogueChoicesParent: {fileID: 8171889482841597641}
   _dialogueChoicePrefab: {fileID: 669371411121693304, guid: 7ca0cfbbb9778b241ba6e8671d241b56, type: 3}
   _dialogueChoiceIndicator: {fileID: 1747517205138654429}
 --- !u!114 &8307168031348490765
@@ -1096,7 +1097,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2720032069854817102}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.2591586
+  m_Size: 0.21135266
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1252,9 +1253,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
   m_MinWidth: -1
-  m_MinHeight: -1
+  m_MinHeight: 140
   m_PreferredWidth: 1400
-  m_PreferredHeight: 235
+  m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
