@@ -5,18 +5,18 @@ using Zenject;
 
 public class InputReader : MonoBehaviour, Controls.IPlayerActions {
 
-	#region Properties
-
-	public Vector2 MouseDelta { get; set; }
-	public Vector2 MoveComposite { get; set; }
-
-	#endregion
-
 	#region Variables
 
 	[Inject] private readonly EventBus _eventBus;
 
 	private Controls _controls;
+
+	#endregion
+
+	#region Properties
+
+	public Vector2 MouseDelta { get; set; }
+	public Vector2 MoveComposite { get; set; }
 
 	#endregion
 
