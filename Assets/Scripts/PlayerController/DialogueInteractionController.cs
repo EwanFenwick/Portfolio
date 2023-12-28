@@ -55,6 +55,11 @@ namespace Portfolio.PlayerController {
                 return;
             }
 
+            if(_currentStory.currentChoices.Count > 0) {
+                //wait for the user to select a choice
+                return;
+            }
+
             if(_currentStory.canContinue) {
                 ContinueCurrentDialogue();
             } else {
@@ -68,7 +73,8 @@ namespace Portfolio.PlayerController {
                 _popupController.RequestPopup(_dialoguePopupRequest);
             }
 
-            void ContinueCurrentDialogue() => _eventBus.Publish(this, new DialogueContinuedEvent(_currentStory.Continue()));
+            void ContinueCurrentDialogue()
+                => _eventBus.Publish(this, new DialogueContinuedEvent(_currentStory.Continue()));
 
             void CloseCurrentDialogue() {
                 _popupController.ClosePopup(_dialoguePopupRequest);

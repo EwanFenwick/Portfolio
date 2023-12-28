@@ -7,7 +7,7 @@ namespace Portfolio.Popups {
         public Story Story { get; set; }
 
         public DialoguePopupRequest(string speakerName, Story story)
-            : base(typeof(DialoguePopupView), dismissable: false, pauseEventType: EventBusSystem.PauseEventType.Dialogue) {
+            : base(typeof(DialoguePopupPresenter), dismissable: false, pauseEventType: EventBusSystem.PauseEventType.Dialogue) {
             Speaker = speakerName;
             Story = story;
         }

@@ -4,8 +4,8 @@
 Behold! I am speaking to you now!
     + [Wow!]
         -> chosen("Wow")
-    + [Dialogue is awesome!]
-        -> chosen("Awesome")
+    + [I love talking to test NPCs]
+        -> sayMore
     + [Kinda boring tbh]
         -> rude
     
@@ -13,6 +13,12 @@ Behold! I am speaking to you now!
 === chosen(text) ===
 That's right! {text} indeed!
 ->END
+        
+=== sayMore ===
+To test what nows?
+Oh well, no matter.
+Cheerio!
+-> END
 
 === rude ===
 Sorry. It's all I have.
@@ -20,7 +26,7 @@ Sorry. It's all I have.
         That's okay.
         -> END
     +[...]
-        I wonder what would happen if I fell off this plane.
+        Some conversation partner you are.
         -> END
     +[*Shrug*]
         Yeah.

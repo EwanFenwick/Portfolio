@@ -1,9 +1,9 @@
+using UnityEngine;
+using UnityEngine.UI;
+using UniRx;
 using Cysharp.Threading.Tasks;
 using Portfolio.EventBusSystem;
 using Portfolio.Tweening;
-using UniRx;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace Portfolio.Popups {
     public abstract class Popup : MonoBehaviour {
@@ -11,8 +11,8 @@ namespace Portfolio.Popups {
         #region Editor Variables
 #pragma warning disable 0649
 
-        [SerializeField] TweenController _openAnimation;
-        [SerializeField, Tooltip("Optional: for dismissable popups")] Button _closeButton;
+        [SerializeField] private TweenController _openAnimation;
+        [SerializeField, Tooltip("Optional: for dismissable popups")] private Button _closeButton;
 
 #pragma warning restore 0649
         #endregion
@@ -22,6 +22,7 @@ namespace Portfolio.Popups {
         protected EventBus _eventBus;
 
         private PopupRequest _popupRequest;
+        private CompositeDisposable _closeDisposable;
 
         #endregion
 
@@ -39,10 +40,10 @@ namespace Portfolio.Popups {
             _popupRequest = popupRequest;
             gameObject.SetActive(true);
 
-            ConfigureCloseButton();
-
             //call OnOpen before the opening animation
             OnPopupOpen(popupRequest);
+
+            ConfigureCloseButton();
 
             //await the end of the opening animation
             _openAnimation.StopAndResetTween();
@@ -50,6 +51,8 @@ namespace Portfolio.Popups {
         }
 
         public async UniTaskVoid Close() {
+            _closeDisposable?.Dispose();
+
             //await the end of the closing animation
             _openAnimation.StopAndResetTween(true);
             await _openAnimation.PlayReversed();
@@ -85,8 +88,8 @@ namespace Portfolio.Popups {
             }
 
             if(_popupRequest.Dismissable) {
-                _closeButton.onClick.AsObservable().Subscribe(x => OnCloseClicked()).AddTo(this);
-                //_closeButton.onClick.AddListener(OnCloseClicked);
+                _closeDisposable = new CompositeDisposable();
+                _closeButton.onClick.AsObservable().Subscribe(x => OnCloseClicked()).AddTo(_closeDisposable);
             }
 
             _closeButton.gameObject.SetActive(_popupRequest.Dismissable);
