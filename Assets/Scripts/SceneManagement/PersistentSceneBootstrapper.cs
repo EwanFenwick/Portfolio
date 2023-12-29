@@ -1,9 +1,9 @@
+using UnityEngine;
 using Cysharp.Threading.Tasks;
+using Zenject;
+using Portfolio.AssetLibraries;
 using MyGameDevTools.SceneLoading;
 using MyGameDevTools.SceneLoading.UniTaskSupport;
-using Portfolio.AssetCollections;
-using UnityEngine;
-using Zenject;
 using static Portfolio.SceneManagement.SceneManagementEnums;
 
 namespace Portfolio.SceneManagement {
@@ -11,18 +11,18 @@ namespace Portfolio.SceneManagement {
 
 		[Inject] private readonly SceneIndexLibrary _sceneIndexLibrary;
 
-		private async void Start() {
+		private void Start() {
 			Screen.sleepTimeout = SleepTimeout.NeverSleep;
-			await LoadGameScene();
+			LoadGameScene().Forget();
 		}
 
-		private async UniTask LoadGameScene() {
+		private async UniTaskVoid LoadGameScene() {
 			//load new scene
 			var sceneManager = new SceneManager();
 			var sceneLoader = new SceneLoaderUniTask(sceneManager);
 
-			var gameSceneInfo = new LoadSceneInfoIndex(_sceneIndexLibrary.GetSceneIndex(SceneType.Game));
-			var loadingSceneInfo = new LoadSceneInfoIndex(_sceneIndexLibrary.GetSceneIndex(SceneType.Loading));
+			var gameSceneInfo = _sceneIndexLibrary.GetSceneInfoIndex(SceneType.Game);
+			var loadingSceneInfo = _sceneIndexLibrary.GetSceneInfoIndex(SceneType.Loading);
 
 			await sceneLoader.TransitionToSceneAsync(gameSceneInfo, loadingSceneInfo);
 		}

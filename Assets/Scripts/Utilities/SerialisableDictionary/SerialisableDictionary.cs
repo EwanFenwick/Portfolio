@@ -2,8 +2,8 @@ using System;
 using UnityEngine;
 
 namespace Portfolio.Utilities {
-	public abstract class SerialisableDictionary<TKey, TValue>
-			where TKey : IComparable {
+	public abstract class SerialisableDictionary<TKey, TValue> : ISerialisableDictionary<TKey, TValue>
+		where TKey : IComparable {
 
 		#region Editor Variables
 #pragma warning disable 0649

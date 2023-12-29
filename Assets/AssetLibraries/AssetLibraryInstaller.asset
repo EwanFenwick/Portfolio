@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cbf6d061b077e4745bd1f6188ebba7fa, type: 3}
-  m_Name: AssetCollectionInstaller
+  m_Name: AssetLibraryInstaller
   m_EditorClassIdentifier: 
   SceneIndexLibrary: {fileID: 11400000, guid: 86f3ae4f3c936244bbc63cdca1414d3d, type: 2}
