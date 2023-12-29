@@ -35,6 +35,7 @@ namespace Portfolio.Popups {
 
         #region Variables
 
+        //TODO: This and other meta data can be integrated into the story file via tags 
         private readonly Color _textNormalColour = Color.white;
         private readonly Color _textHighlightColour = Color.cyan;
 
@@ -120,6 +121,7 @@ namespace Portfolio.Popups {
                 return;
             }
 
+            //TODO: It might be more SOLID to turn this into a factory class later
             for(int i = 0, iLength = choices.Count; i < iLength; i++) {
                 DialogueChoiceView choice;
 
