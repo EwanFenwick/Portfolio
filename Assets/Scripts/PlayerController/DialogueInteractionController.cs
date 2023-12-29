@@ -74,7 +74,7 @@ namespace Portfolio.PlayerController {
             }
 
             void ContinueCurrentDialogue()
-                => _eventBus.Misc.Publish(this, new DialogueContinuedEvent(_currentStory.Continue()));
+                => _eventBus.Popups.Publish(this, new DialogueContinuedEvent(_currentStory.Continue()));
 
             void CloseCurrentDialogue() {
                 _popupController.ClosePopup(_dialoguePopupRequest);
