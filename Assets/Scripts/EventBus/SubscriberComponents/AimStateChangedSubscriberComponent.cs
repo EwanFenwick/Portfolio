@@ -1,5 +1,3 @@
-using Portfolio.EventBusSystem;
-
-namespace Portfolio {
+namespace Portfolio.EventBusSystem {
     public class AimStateChangedSubscriberComponent : PlayerStateChangedSubscriberComponent<AimStateChangedEvent> { }
 }

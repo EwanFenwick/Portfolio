@@ -7,7 +7,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions {
 
 	#region Variables
 
-	[Inject] private readonly EventBus _eventBus;
+	[Inject] private readonly GlobalEventBus _eventBus;
 
 	private Controls _controls;
 
@@ -53,7 +53,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions {
 			return;
 		}
 
-		_eventBus.Publish(this, new JumpPerformedEvent());
+		_eventBus.Input.Publish(this, new JumpPerformedEvent());
 	}
 
     public void OnInteract(InputAction.CallbackContext context) {
@@ -61,7 +61,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions {
 			return;
 		}
 
-		_eventBus.Publish(this, new InteractionPerformedEvent());
+		_eventBus.Input.Publish(this, new InteractionPerformedEvent());
     }
 
     public void OnAim(InputAction.CallbackContext context) {
@@ -69,7 +69,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions {
 			return;
 		}
 
-		_eventBus.Publish(this, new AimPerformedEvent());
+		_eventBus.Input.Publish(this, new AimPerformedEvent());
 	}
 
     #endregion

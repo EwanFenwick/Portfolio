@@ -10,7 +10,7 @@ namespace Portfolio.PlayerController {
         #region Public Methods
 
         public override void Enter() {
-            _stateMachine.EventBus.Publish(this, new DialogueStateChangedEvent(PlayerStatePhase.Entered));
+            _stateMachine.EventBus.PlayerState.Publish(this, new DialogueStateChangedEvent(PlayerStatePhase.Entered));
 
             base.Enter();
         }
@@ -18,7 +18,7 @@ namespace Portfolio.PlayerController {
         public override void Exit() {
             base.Exit();
 
-            _stateMachine.EventBus.Publish(this, new DialogueStateChangedEvent(PlayerStatePhase.Exited));
+            _stateMachine.EventBus.PlayerState.Publish(this, new DialogueStateChangedEvent(PlayerStatePhase.Exited));
         }
 
         #endregion

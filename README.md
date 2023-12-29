@@ -8,8 +8,7 @@ This project is made with Unity2022.3.14f1.
 To save scouring through the project for examples of my code, I suggest these classes as highlights:
 * The [PopupController](Assets/Scripts/Popups/PopupController/PopupController.cs) and its [PopupControllerView](Assets/Scripts/Popups/PopupController/PopupControllerView.cs).
 * The lightweight and asynchronous [TweenController](Assets/Scripts/Tweening/TweenController.cs) that allows for simple tween animations for a variety of components following an ```AnimationCurve```.
-* The simple [EventBus](Assets/Scripts/EventBus/EventBus.cs) system and the [EventBusSubscriberComponents](Assets/Scripts/EventBus/SubscriberComponents) that create compatibility with the editor and integrate UnityEvents.
-* The utility class [SerialisableDictionary](Assets/Scripts/Utilities/SerialisableDictionary.cs).
+* The simple [EventBus](Assets/Scripts/EventBus/EventBus.cs) system and the [EventBus SubscriberComponents](Assets/Scripts/EventBus/SubscriberComponents) that create compatibility with the editor and integrate UnityEvents.
 
 # Coding Conventions
 When beginning this project I decided upon the following patterns and conventions:

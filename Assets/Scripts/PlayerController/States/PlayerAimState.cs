@@ -10,10 +10,10 @@ namespace Portfolio.PlayerController {
         #region Public Methods
 
         public override void Enter() {
-            _stateMachine.EventBus.Publish(this, new AimStateChangedEvent(PlayerStatePhase.Entered));
+            _stateMachine.EventBus.PlayerState.Publish(this, new AimStateChangedEvent(PlayerStatePhase.Entered));
 
-            _stateMachine.EventBus.Subscribe<AimPerformedEvent>(SwitchToMoveState);
-            _stateMachine.EventBus.Subscribe<PausePlayerEvent>(SwitchToPausedState);
+            _stateMachine.EventBus.Input.Subscribe<AimPerformedEvent>(SwitchToMoveState);
+            _stateMachine.EventBus.PlayerState.Subscribe<TogglePlayerPauseStateEvent>(SwitchToPausedState);
 
             _stateMachine.Velocity.y = Physics.gravity.y;
 
@@ -33,10 +33,10 @@ namespace Portfolio.PlayerController {
         }
 
         public override void Exit() {
-            _stateMachine.EventBus.Unsubscribe<AimPerformedEvent>(SwitchToMoveState);
-            _stateMachine.EventBus.Unsubscribe<PausePlayerEvent>(SwitchToPausedState);
+            _stateMachine.EventBus.Input.Unsubscribe<AimPerformedEvent>(SwitchToMoveState);
+            _stateMachine.EventBus.PlayerState.Unsubscribe<TogglePlayerPauseStateEvent>(SwitchToPausedState);
 
-            _stateMachine.EventBus.Publish(this, new AimStateChangedEvent(PlayerStatePhase.Exited));
+            _stateMachine.EventBus.PlayerState.Publish(this, new AimStateChangedEvent(PlayerStatePhase.Exited));
         }
 
         #endregion
@@ -48,7 +48,7 @@ namespace Portfolio.PlayerController {
         }
 
         private void SwitchToPausedState(object sender, EventArgs eventArgs) {
-            switch(((PausePlayerEvent)eventArgs).PauseType) {
+            switch(((TogglePlayerPauseStateEvent)eventArgs).PauseType) {
                 case PauseEventType.Dialogue:
                     _stateMachine.SwitchState(new PlayerDialogueState(_stateMachine));
                     break;

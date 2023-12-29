@@ -2,11 +2,25 @@ using System;
 using System.Collections.Generic;
 
 namespace Portfolio.EventBusSystem {
-    public class EventBus {
+    public class GlobalEventBus {
 
+        public EventBus Input { get; private set; }
+        public EventBus PlayerState { get; private set; }
+        public EventBus Popups { get; private set; }
+        public EventBus Misc { get; private set; }
+
+        public GlobalEventBus() {
+            Input = new EventBus();
+            PlayerState = new EventBus();
+            Popups = new EventBus();
+            Misc = new EventBus();
+        }
+    }
+
+    public class EventBus {
         #region Variables
 
-        private Dictionary<Type, List<EventHandler>> _subscribersByType;
+        private readonly Dictionary<Type, List<EventHandler>> _subscribersByType;
 
         #endregion
 
@@ -18,7 +32,7 @@ namespace Portfolio.EventBusSystem {
 
         public void Subscribe<T>(EventHandler eventHandler) where T : EventArgs {
             var type = typeof(T);
-            if(!_subscribersByType.TryGetValue(type, out var subscribers)) {
+            if (!_subscribersByType.TryGetValue(type, out var _)) {
                 _subscribersByType.Add(type, new List<EventHandler>());
             }
             _subscribersByType[type].Add(eventHandler);
@@ -26,7 +40,7 @@ namespace Portfolio.EventBusSystem {
 
         public void Unsubscribe<T>(EventHandler eventHandler) where T : EventArgs {
             var type = typeof(T);
-            if (_subscribersByType.TryGetValue(type, out var subscribers)) {
+            if (_subscribersByType.TryGetValue(type, out var _)) {
                 _subscribersByType[type].Remove(eventHandler);
             }
         }
@@ -41,4 +55,5 @@ namespace Portfolio.EventBusSystem {
 
         #endregion
     }
+
 }

@@ -10,21 +10,21 @@ namespace Portfolio.Popups {
         #region Variables
 
         private readonly PopupControllerView _popupControllerView;
-        private readonly EventBus _eventBus;
+        private readonly GlobalEventBus _eventBus;
 
         private List<PopupRequest> _activePopups = new List<PopupRequest>();
         private Queue<PopupRequest> _popupQueue = new Queue<PopupRequest>();
 
         #endregion
 
-        public PopupController(EventBus eventBus, PopupControllerView popupControllerView) {
+        public PopupController(GlobalEventBus eventBus, PopupControllerView popupControllerView) {
             _eventBus = eventBus;
             _popupControllerView = popupControllerView;
 
             _activePopups.ObserveEveryValueChanged(x => x.Count).Subscribe(OnActivePopupsChanged);
             _popupQueue.ObserveEveryValueChanged(x => x.Count).Subscribe(OnPopupQueueChanged);
 
-            _eventBus.Subscribe<ClosePopupEvent>(OnCloseRequested);
+            _eventBus.Popups.Subscribe<ClosePopupEvent>(OnCloseRequested);
         }
 
         #region Public Methods
@@ -94,7 +94,7 @@ namespace Portfolio.Popups {
             }
         }
 
-        private void FirePlayerPauseEvent(PauseEventType pauseType) => _eventBus.Publish(this, new PausePlayerEvent(pauseType));
+        private void FirePlayerPauseEvent(PauseEventType pauseType) => _eventBus.PlayerState.Publish(this, new TogglePlayerPauseStateEvent(pauseType));
 
         private void OnActivePopupsChanged(int count) {
             if(count == 0 && _popupQueue.Count > 0) {

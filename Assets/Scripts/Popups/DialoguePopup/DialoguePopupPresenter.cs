@@ -66,11 +66,11 @@ namespace Portfolio.Popups {
             _choiceIndicator.Hide();
             ContinueStory();
 
-            _eventBus.Subscribe<DialogueContinuedEvent>(ContinueStory);
+            _eventBus.Misc.Subscribe<DialogueContinuedEvent>(ContinueStory);
         }
 
         protected override void OnPopupClosed() {
-            _eventBus.Unsubscribe<DialogueContinuedEvent>(ContinueStory);
+            _eventBus.Misc.Unsubscribe<DialogueContinuedEvent>(ContinueStory);
 
             _lastClickedGameObject = null;
             _choiceDisposables.Dispose();
@@ -81,7 +81,7 @@ namespace Portfolio.Popups {
         }
 
         protected override void OnCloseClicked() {
-            _eventBus.Unsubscribe<DialogueContinuedEvent>(ContinueStory);
+            _eventBus.Misc.Unsubscribe<DialogueContinuedEvent>(ContinueStory);
             base.OnCloseClicked();
         }
 

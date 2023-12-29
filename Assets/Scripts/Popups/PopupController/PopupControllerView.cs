@@ -18,7 +18,7 @@ namespace Portfolio.Popups {
 
         #region Variables
 
-        [Inject] private readonly EventBus _eventBus;
+        [Inject] private readonly GlobalEventBus _eventBus;
 
         private readonly Dictionary<Type, Popup> _popupDictionary = new Dictionary<Type, Popup>();
         private readonly Dictionary<Type, Popup> _popupInstances = new Dictionary<Type, Popup>();

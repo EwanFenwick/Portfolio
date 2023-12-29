@@ -10,7 +10,7 @@ namespace Portfolio.PlayerController {
         #region Public Methods
 
         public override void Enter() {
-            _stateMachine.EventBus.Subscribe<PausePlayerEvent>(CheckForUnpause);
+            _stateMachine.EventBus.PlayerState.Subscribe<TogglePlayerPauseStateEvent>(CheckForUnpause);
 
             _stateMachine.Animator.CrossFadeInFixedTime(_settings.MoveBlendTreeHash, _settings.CrossFadeDuration);
             Cursor.lockState = CursorLockMode.Confined;
@@ -21,7 +21,7 @@ namespace Portfolio.PlayerController {
         }
 
         public override void Exit() {
-            _stateMachine.EventBus.Unsubscribe<PausePlayerEvent>(CheckForUnpause);
+            _stateMachine.EventBus.PlayerState.Unsubscribe<TogglePlayerPauseStateEvent>(CheckForUnpause);
         }
 
         #endregion
@@ -30,7 +30,7 @@ namespace Portfolio.PlayerController {
 
         private void CheckForUnpause(object sender, EventArgs eventArgs) {
             //TODO: expand this to allow transition to other pause states later
-            if(((PausePlayerEvent)eventArgs).PauseType != PauseEventType.Unpause) {
+            if(((TogglePlayerPauseStateEvent)eventArgs).PauseType != PauseEventType.Unpause) {
                 return;
             }
 

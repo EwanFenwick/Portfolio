@@ -10,7 +10,7 @@ namespace Portfolio.PlayerController {
 
         #region Variables
 
-        [Inject] private readonly EventBus _eventBus;
+        [Inject] private readonly GlobalEventBus _eventBus;
 
         #endregion
 
@@ -26,7 +26,7 @@ namespace Portfolio.PlayerController {
         public Animator Animator { get; private set; }
         public CharacterController Controller { get; private set; }
         
-        public EventBus EventBus => _eventBus;
+        public GlobalEventBus EventBus => _eventBus;
 
         #endregion
 

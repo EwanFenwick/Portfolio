@@ -19,7 +19,7 @@ namespace Portfolio.Popups {
 
         #region Variables
 
-        protected EventBus _eventBus;
+        protected GlobalEventBus _eventBus;
 
         private PopupRequest _popupRequest;
         private CompositeDisposable _closeDisposable;
@@ -28,7 +28,7 @@ namespace Portfolio.Popups {
 
         #region Lifecycle
 
-        public virtual void Initialise(EventBus eventBus) {
+        public virtual void Initialise(GlobalEventBus eventBus) {
             _eventBus = eventBus;
         }
 
@@ -73,7 +73,7 @@ namespace Portfolio.Popups {
         }
 
         protected virtual void OnCloseClicked() {
-            _eventBus.Publish(this, new ClosePopupEvent(_popupRequest));
+            _eventBus.Popups.Publish(this, new ClosePopupEvent(_popupRequest));
         }
 
         protected T GetPopupRequest<T>() where T : PopupRequest => (T)_popupRequest;

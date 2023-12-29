@@ -14,7 +14,7 @@ namespace Portfolio.PlayerController {
         #region Variables
 
         [Inject] private readonly PopupController _popupController;
-        [Inject] private readonly EventBus _eventBus;
+        [Inject] private readonly GlobalEventBus _eventBus;
 
         private DialoguePopupRequest _dialoguePopupRequest;
         private DialogueAgent _dialogueAgent;
@@ -34,11 +34,11 @@ namespace Portfolio.PlayerController {
             this.OnTriggerEnterAsObservable().Subscribe(other => CheckNewAgent(other)).AddTo(this);
             this.OnTriggerExitAsObservable().Subscribe(other => RemoveAgent(other)).AddTo(this);
 
-            _eventBus.Subscribe<InteractionPerformedEvent>(OnInteractionPerformed);
+            _eventBus.Input.Subscribe<InteractionPerformedEvent>(OnInteractionPerformed);
         }
 
         private void OnDisable() {
-            _eventBus.Unsubscribe<InteractionPerformedEvent>(OnInteractionPerformed);
+            _eventBus.Input.Unsubscribe<InteractionPerformedEvent>(OnInteractionPerformed);
         }
 
         #endregion
@@ -74,7 +74,7 @@ namespace Portfolio.PlayerController {
             }
 
             void ContinueCurrentDialogue()
-                => _eventBus.Publish(this, new DialogueContinuedEvent(_currentStory.Continue()));
+                => _eventBus.Misc.Publish(this, new DialogueContinuedEvent(_currentStory.Continue()));
 
             void CloseCurrentDialogue() {
                 _popupController.ClosePopup(_dialoguePopupRequest);
