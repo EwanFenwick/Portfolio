@@ -4,7 +4,7 @@ using Portfolio.Utilities;
 using static Portfolio.SceneManagement.SceneManagementEnums;
 
 namespace Portfolio.AssetLibraries {
-	[CreateAssetMenu(fileName = "SceneIndexLibrary", menuName = "ScriptableObjects/SceneIndexLibraryScriptableObject", order = 0)]
+	[CreateAssetMenu(fileName = "SceneIndexLibrary", menuName = "Portfolio/AssetLibraries/New SceneIndexLibrary", order = 0)]
 	public class SceneIndexLibrary : ScriptableObject {
 		
 		#region Editor Variables
