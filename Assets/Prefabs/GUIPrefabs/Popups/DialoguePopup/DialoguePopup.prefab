@@ -1074,7 +1074,7 @@ MonoBehaviour:
   _dialogueScollView: {fileID: 5798405129950252770}
   _dialogueChoicesParent: {fileID: 8171889482841597641}
   _dialogueChoicePrefab: {fileID: 669371411121693304, guid: 7ca0cfbbb9778b241ba6e8671d241b56, type: 3}
-  _dialogueIndicator: {fileID: 9019061679342789079}
+  _choiceIndicator: {fileID: 9019061679342789079}
 --- !u!114 &8307168031348490765
 MonoBehaviour:
   m_ObjectHideFlags: 0
