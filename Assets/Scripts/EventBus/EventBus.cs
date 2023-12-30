@@ -7,6 +7,8 @@ namespace Portfolio.EventBusSystem {
         public EventBus Input { get; private set; }
         public EventBus PlayerState { get; private set; }
         public EventBus Popups { get; private set; }
+        public EventBus Quest { get; set; }
+        public EventBus Triggers { get; set; }
         public EventBus Misc { get; private set; }
 
         public GlobalEventBus() {

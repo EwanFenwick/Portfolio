@@ -3,10 +3,11 @@ using UnityEngine;
 using Zenject;
 
 namespace Portfolio.EventBusSystem {
-    public abstract class SubscriberComponent<T> : MonoBehaviour where T : EventArgs {
+    public abstract class SubscriberComponent<T> : MonoBehaviour, ISubscriberComponent
+        where T : EventArgs {
         #region  Variables
 
-        [Inject] protected readonly GlobalEventBus _eventBus;
+        [Inject] protected GlobalEventBus _eventBus;
 
         #endregion
 
@@ -24,4 +25,7 @@ namespace Portfolio.EventBusSystem {
 
         #endregion
     }
+
+    //Marker interface to allow use without type <T>
+    public interface ISubscriberComponent { }
 }
