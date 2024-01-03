@@ -27,6 +27,12 @@ MonoBehaviour:
       <QuestStepID>k__BackingField: TestQuest_Two
       <QuestStepType>k__BackingField: 0
       <NeededRepetitions>k__BackingField: 1
+  - _key: 1
+    _value:
+    - <QuestID>k__BackingField: TestQuest
+      <QuestStepID>k__BackingField: TestQuest_One
+      <QuestStepType>k__BackingField: 0
+      <NeededRepetitions>k__BackingField: 1
   _reward:
     _moneyReward: 5
     _xpReward: 100

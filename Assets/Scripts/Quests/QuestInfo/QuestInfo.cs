@@ -4,8 +4,6 @@ using UnityEngine;
 using Portfolio.Rewards;
 using Portfolio.Utilities;
 
-using static Portfolio.Quests.QuestEnums;
-
 namespace Portfolio.Quests {
     [CreateAssetMenu(fileName = "QuestInfo", menuName = "Portfolio/Quests/New QuestInfo", order = 0)]
     public class QuestInfo : ScriptableObject {
@@ -25,7 +23,6 @@ namespace Portfolio.Quests {
         public Reward _reward;
 
 #if UNITY_EDITOR
-
         private void OnValidate() {
             ID = this.name;
             foreach(var args in _questSteps) {
@@ -36,20 +33,9 @@ namespace Portfolio.Quests {
 
             UnityEditor.EditorUtility.SetDirty(this);
         }
-
 #endif
     }
 
     [Serializable]
     public class QuestStepDict : SerialisableDictionary<int, QuestStepInfo[]> { }
-    
-    [Serializable]
-    public class QuestStepInfo {
-        [field: SerializeField] public string QuestID { get; private set; }
-        [field: SerializeField] public string QuestStepID { get; private set; }
-        [field: SerializeField] public QuestStepType QuestStepType { get; private set; }
-        [field: SerializeField] public int NeededRepetitions { get; private set; }
-
-        public void EditorSetQuestID(string id) => QuestID = id;
-    }
 }

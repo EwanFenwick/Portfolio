@@ -37,10 +37,10 @@ namespace Portfolio.Quests {
         private void DEBUG_CheckFirstQuestsRequirements()
         {
             var q = _quests.First().Value;
-            if(QuestMeetsStartingRequirements(q)){
+            if(QuestMeetsStartingRequirements(q)) {
                 Debug.Log($"Quest '{q.ID}' meets all starting requirements");
                 q.SetQuestStartable();
-            }else{
+            } else {
                 Debug.Log($"Quest '{q.ID}' does not meet all starting requirements");
             }
         }
@@ -48,10 +48,10 @@ namespace Portfolio.Quests {
         [Button]
         private void DEBUG_ActivateFirstQuest() {
             var q = _quests.First().Value;
-            if(q.QuestState == QuestEnums.QuestState.CanStart){
+            if(q.QuestState == QuestEnums.QuestState.CanStart) {
                 Debug.Log($"Starting quest '{q.ID}'");
                 q.StartQuest();
-            }else{
+            } else {
                 Debug.Log($"Quest '{q.ID}' cannot start");
             }
         }
@@ -62,7 +62,7 @@ namespace Portfolio.Quests {
             if(q.QuestState == QuestEnums.QuestState.CanComplete) {
                 Debug.Log($"Completing quest '{q.ID}'");
                 q.CompleteQuest();
-            }else{
+            } else {
                 Debug.Log($"Quest '{q.ID}' is not completeable");
             }
         }
@@ -76,7 +76,7 @@ namespace Portfolio.Quests {
 
             //check if all required quests have been completed
             foreach(var prereq in quest.QuestPrerequisities) {
-                if(_quests.Values.Any(q => q.ID.Equals(prereq.ID) && q.QuestState != QuestEnums.QuestState.Completed)) {
+                if(_quests.TryGetValue(prereq.ID, out var q) && q.QuestState != QuestEnums.QuestState.Completed) {
                     requirementsMet = false;
                 }
             }
