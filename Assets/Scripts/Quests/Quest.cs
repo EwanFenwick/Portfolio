@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 using Portfolio.Rewards;
+
 using static Portfolio.Quests.QuestEnums;
 
 namespace Portfolio.Quests {
@@ -8,51 +9,113 @@ namespace Portfolio.Quests {
 
         #region Variables
 
-        [Inject] private readonly QuestStepFactory _questStepFactory;
-
         private readonly QuestInfo _questInfo;
         private readonly GameObject _parentObject;
+        private readonly QuestStepFactory _questStepFactory;
+
+        private GameObject _questGameObject;
+        private List<QuestStep> _activeQuestSteps;
 
         #endregion
 
         #region Properties
 
-        public int ID { get; set; }
-        
-        public QuestState State { get; private set; }
+        // General
+        public string ID => _questInfo.ID;
+        public QuestState QuestState { get; private set; }
 
+        // Prerequisites
+        public int LevelPrerequisite => _questInfo._levelPrerequisite;
         public QuestInfo[] QuestPrerequisities => _questInfo._questPrerequisities;
 
+        // Steps
         public int CurrentQuestStep { get; private set; }
-
         public QuestStepDict[] QuestSteps => _questInfo._questSteps;
 
+        // Rewards
         public Reward Reward => _questInfo._reward;
 
         #endregion
 
-        public Quest(QuestInfo questInfo, GameObject parentObject) {
+        public Quest(QuestInfo questInfo, GameObject parentObject, QuestStepFactory stepFactory) {
             _questInfo = questInfo;
             _parentObject = parentObject;
+            _questStepFactory = stepFactory;
 
             //TODO: get info from saved data
-            State = QuestState.RequirementsNotMet;
-            CurrentQuestStep = 0;
+            QuestState = QuestState.RequirementsNotMet;
+            CurrentQuestStep = -1;
         }
 
-        public void MoveToNextStep() => CurrentQuestStep++;
+        #region Public Methods
 
-        public (QuestStepType type, QuestInfoArgs args) GetCurrentQuestStep() {
-            return (QuestSteps[CurrentQuestStep].Key, QuestSteps[CurrentQuestStep].Value);
+        public void SetQuestStartable() => QuestState = QuestState.CanStart;
+
+        public void StartQuest() {
+            QuestState = QuestState.InProgress;
+            AdvanceQuest();
         }
 
-        public void ActivateQuestStep() {
-            //TEMP
-            var (type, args) = GetCurrentQuestStep();
-            GameObject g = new(args.QuestID);
-            g.transform.parent = _parentObject.transform;
-            var qs = _questStepFactory.Create(type, args, g);
-            Debug.Log(qs);
+        public void AdvanceQuest() {
+            if(++CurrentQuestStep >= QuestSteps.Length) {
+                QuestState = QuestState.CanComplete;
+                Debug.Log($"Quest \"{ID}\" can be completed");
+                //TODO: add event for the manager to allow completion
+                return;
+            }
+
+            ActivateCurrentQuestSteps(GetCurrentQuestSteps());
         }
+
+        public void CompleteQuest() {
+            QuestState = QuestState.Completed;
+            UnityEngine.Object.Destroy(_questGameObject);
+
+            //TODO: give out reward
+            Debug.Log($"Rewarding player {Reward}");
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private QuestStepInfo[] GetCurrentQuestSteps() => QuestSteps[CurrentQuestStep].Value;
+
+        private void ActivateCurrentQuestSteps(QuestStepInfo[] currentSteps) {
+            if(currentSteps.Length == 0) {
+                Debug.LogError($"No quest steps found for current quest: {ID}");
+                return;
+            }
+
+            if(_questGameObject == null) {
+                _questGameObject = new(ID);
+                _questGameObject.transform.parent = _parentObject.transform;
+            }
+
+            _activeQuestSteps = new();
+
+            for(int i = 0, iLength = currentSteps.Length; i < iLength; i++) {
+                var step = _questStepFactory.Create(currentSteps[i], _questGameObject);
+                
+                step.OnComplete += OnQuestStepCompleted;
+                _activeQuestSteps.Add(step);
+            }
+        }
+
+        private void OnQuestStepCompleted(string questStepID) {
+            for(int i = 0, iLength = _activeQuestSteps.Count; i < iLength; i++) {
+                if(questStepID.Equals(_activeQuestSteps[i].QuestStepID)) {
+                    _activeQuestSteps[i].OnComplete -= OnQuestStepCompleted;
+                }
+            }
+
+            _activeQuestSteps.RemoveAll(s => s.QuestStepID.Equals(questStepID));
+
+            if(_activeQuestSteps.Count == 0) {
+                AdvanceQuest();
+            }
+        }
+
+        #endregion
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Portfolio.EventBusSystem;
+using static Portfolio.EventBusSystem.EventBusEnums;
 
 namespace Portfolio.PlayerController {
     public class PlayerAimState : PlayerBaseState {

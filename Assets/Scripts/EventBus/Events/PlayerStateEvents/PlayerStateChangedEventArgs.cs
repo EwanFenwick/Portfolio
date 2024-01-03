@@ -1,4 +1,5 @@
 using System;
+using static Portfolio.EventBusSystem.EventBusEnums;
 
 namespace Portfolio.EventBusSystem {
     public class PlayerStateChangedEventArgs : EventArgs {

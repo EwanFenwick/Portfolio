@@ -1,5 +1,5 @@
 using System;
-using Portfolio.EventBusSystem;
+using static Portfolio.EventBusSystem.EventBusEnums;
 
 namespace Portfolio.Popups {
     public class PopupRequest {

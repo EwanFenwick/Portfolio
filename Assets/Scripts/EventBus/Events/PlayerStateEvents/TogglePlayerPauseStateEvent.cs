@@ -1,5 +1,7 @@
 using System;
 
+using static Portfolio.EventBusSystem.EventBusEnums;
+
 namespace Portfolio.EventBusSystem {
     //TODO: this should probably be split in half.
     //One event for pause/unpause requests and another event for when pauses and unpauses occur

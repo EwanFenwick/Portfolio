@@ -14,12 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ID>k__BackingField: TestQuest
   _displayName: Test that Quest
+  _levelPrerequisite: 0
   _questPrerequisities: []
   _questSteps:
   - _key: 0
     _value:
-      <QuestID>k__BackingField: TestQuest
-      <Repetitions>k__BackingField: 1
+    - <QuestID>k__BackingField: TestQuest
+      <QuestStepID>k__BackingField: TestQuest_One
+      <QuestStepType>k__BackingField: 0
+      <NeededRepetitions>k__BackingField: 1
+    - <QuestID>k__BackingField: TestQuest
+      <QuestStepID>k__BackingField: TestQuest_Two
+      <QuestStepType>k__BackingField: 0
+      <NeededRepetitions>k__BackingField: 1
   _reward:
     _moneyReward: 5
     _xpReward: 100

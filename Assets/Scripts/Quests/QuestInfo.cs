@@ -1,8 +1,10 @@
+using System;
+using System.Linq;
 using UnityEngine;
 using Portfolio.Rewards;
 using Portfolio.Utilities;
+
 using static Portfolio.Quests.QuestEnums;
-using System;
 
 namespace Portfolio.Quests {
     [CreateAssetMenu(fileName = "QuestInfo", menuName = "Portfolio/Quests/New QuestInfo", order = 0)]
@@ -13,6 +15,7 @@ namespace Portfolio.Quests {
         public string _displayName;
 
         [Header("Requirements")]
+        public int _levelPrerequisite;
         public QuestInfo[] _questPrerequisities;
 
         [Header("Steps")]
@@ -25,6 +28,12 @@ namespace Portfolio.Quests {
 
         private void OnValidate() {
             ID = this.name;
+            foreach(var args in _questSteps) {
+                args.Value.ToList().ForEach(x => x.EditorSetQuestID(this.name));
+            }
+
+            _questSteps.OrderBy(x => x.Key).ToArray();
+
             UnityEditor.EditorUtility.SetDirty(this);
         }
 
@@ -32,11 +41,15 @@ namespace Portfolio.Quests {
     }
 
     [Serializable]
-    public class QuestStepDict : SerialisableDictionary<QuestStepType, QuestInfoArgs> { }
+    public class QuestStepDict : SerialisableDictionary<int, QuestStepInfo[]> { }
     
     [Serializable]
-    public class QuestInfoArgs {
+    public class QuestStepInfo {
         [field: SerializeField] public string QuestID { get; private set; }
-        [field: SerializeField] public int Repetitions { get; private set; }
+        [field: SerializeField] public string QuestStepID { get; private set; }
+        [field: SerializeField] public QuestStepType QuestStepType { get; private set; }
+        [field: SerializeField] public int NeededRepetitions { get; private set; }
+
+        public void EditorSetQuestID(string id) => QuestID = id;
     }
 }

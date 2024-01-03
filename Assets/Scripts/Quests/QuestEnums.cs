@@ -1,10 +1,15 @@
+using System;
+
+using static Portfolio.EventBusSystem.EventBusEnums;
+
 namespace Portfolio.Quests {
-    public class QuestEnums {
+    public static class QuestEnums {
+        #region Enums
+
         public enum QuestState {
             RequirementsNotMet,
             CanStart,
-            Started,
-            Inprogress,
+            InProgress,
             CanComplete,
             Completed,
             Failed,
@@ -13,5 +18,16 @@ namespace Portfolio.Quests {
         public enum QuestStepType {
             Trigger,
         }
+
+        #endregion
+
+        #region Enum Extensions
+
+        public static SubscriberComponentType ToSubscriberComponentType(this QuestStepType stepType) => stepType switch {
+            QuestStepType.Trigger => SubscriberComponentType.TriggerEntered,
+            _ => throw new NotImplementedException(),
+        };
+
+        #endregion
     }
 }

@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Portfolio.EventBusSystem;
 using UniRx;
+using Portfolio.EventBusSystem;
+using static Portfolio.EventBusSystem.EventBusEnums;
 
 namespace Portfolio.Popups {
     public class PopupController {

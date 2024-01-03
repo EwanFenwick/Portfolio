@@ -1,6 +1,5 @@
-using System;
 using Portfolio.EventBusSystem;
-using UnityEngine;
+using static Portfolio.EventBusSystem.EventBusEnums;
 
 namespace Portfolio.PlayerController {
     public class PlayerDialogueState : PlayerPauseState {

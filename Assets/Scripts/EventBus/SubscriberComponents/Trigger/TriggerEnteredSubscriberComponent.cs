@@ -1,23 +1,30 @@
-using System;
-using UnityEngine;
+using NaughtyAttributes;
 
 namespace Portfolio.EventBusSystem {
     public class TriggerEnteredSubscriberComponent : SubscriberComponent<TriggerEnteredEvent> {
-    
-        protected override void OnEnable()
-        {
-            Debug.Log($"trigger event enabled: {_eventBus != null}");
+
+        protected override void OnEnable() {
+            if(_eventBus == null) {
+                return;
+            }
             _eventBus.Triggers.Subscribe<TriggerEnteredEvent>(OnEvent);
         }
 
-        protected override void OnDisable()
-        {
+        protected override void OnDisable() {
+            if(_eventBus == null) {
+                return;
+            }
             _eventBus.Triggers.Unsubscribe<TriggerEnteredEvent>(OnEvent);
         }
 
-        protected override void OnEvent(object sender, EventArgs eventArgs)
-        {
-            throw new NotImplementedException();
+        [Button]
+        private void DEBUG_SendStepOneEvent() {
+            base.OnEvent(this, new TriggerEnteredEvent("TestQuest_One"));
+        }
+
+        [Button]
+        private void DEBUG_SendStepTwoEvent() {
+            base.OnEvent(this, new TriggerEnteredEvent("TestQuest_Two"));
         }
     }
 }

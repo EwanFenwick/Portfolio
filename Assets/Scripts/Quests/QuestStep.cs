@@ -1,36 +1,66 @@
 using System;
-using Portfolio.EventBusSystem;
-using UniRx;
 using UnityEngine;
 using Zenject;
+using Portfolio.EventBusSystem;
 
 namespace Portfolio.Quests {
     [Serializable]
-    public class QuestStep : MonoBehaviour, IQuestStep {
+    public class QuestStep : MonoBehaviour {
 
-        [Inject] private ISubscriberComponent _subscriberComponent;
-        [Inject] private QuestInfoArgs _questArgs;
+        #region Variables
 
-        public ReactiveProperty<bool> IsComplete { get; private set; }
+        [Inject] private readonly ISubscriberComponent _subscriberComponent;
+        [Inject] private readonly QuestStepInfo _questStepInfo;
 
-        protected void CompleteQuestStep() {
-            if(!IsComplete.Value) {
-                IsComplete.Value = true;
-                Destroy(this);
+        private int _timesRepeated;
+
+        #endregion
+
+        #region Properties
+
+        public string QuestStepID => _questStepInfo.QuestStepID;
+        public event Action<string> OnComplete;
+
+        #endregion
+
+        #region Lifecycle
+
+        private void Start() {
+            _subscriberComponent.OnEventPerformed += OnQuestEvent;
+        }
+
+        private void OnDisable() {
+            _subscriberComponent.OnEventPerformed -= OnQuestEvent;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void OnQuestEvent(EventArgs eventArgs) {
+            string eventID = _questStepInfo.QuestStepType switch {
+                QuestEnums.QuestStepType.Trigger =>
+                    ((TriggerEnteredEvent)eventArgs).TriggerID,
+
+                _ => throw new NotImplementedException(),
+            };
+
+            if(!eventID.Equals(_questStepInfo.QuestStepID)) {
+                return;
+            }
+
+            if(++_timesRepeated >= _questStepInfo.NeededRepetitions) {
+                CompleteQuestStep();
             }
         }
 
-        public override string ToString()
-        {
-            return $"Step for Quest {_questArgs.QuestID}\nMust perform the action {_questArgs.Repetitions} times\nSubscriber Type:{_subscriberComponent.GetType()}";
+        private void CompleteQuestStep() {
+            OnComplete?.Invoke(_questStepInfo.QuestStepID);
+
+            _subscriberComponent.Destroy();
+            Destroy(this);
         }
-    }
 
-    public interface IQuestStep {
-        public ReactiveProperty<bool> IsComplete { get; }
-
-        public virtual void Enable() { }
-
-        public virtual void Disable() { }
+        #endregion
     }
 }

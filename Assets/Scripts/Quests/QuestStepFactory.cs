@@ -5,29 +5,31 @@ using Zenject;
 using static Portfolio.Quests.QuestEnums;
 
 namespace Portfolio.Quests {
-    public class QuestStepFactory : PlaceholderFactory<QuestStepType, QuestInfoArgs, GameObject, QuestStep> { }
+    public class QuestStepFactory : PlaceholderFactory<QuestStepInfo, GameObject, QuestStep> { }
 
-    public class CustomQuestStepFactory : IFactory<QuestStepType, QuestInfoArgs, GameObject, QuestStep> {
+    public class CustomQuestStepFactory : IFactory<QuestStepInfo, GameObject, QuestStep> {
 
-        private readonly GlobalEventBus _eventBus;
         private readonly DiContainer _container;
+        private readonly SubscriberComponentFactory _componentFactory;
 
-        public CustomQuestStepFactory(DiContainer container, GlobalEventBus eventBus) {
+        private GameObject _parent;
+
+        public CustomQuestStepFactory(DiContainer container, SubscriberComponentFactory componentFactory) {
             _container = container;
-            _eventBus = eventBus;
-            Debug.Log($"factory bus enabled: {_eventBus != null}");
+            _componentFactory = componentFactory;
         }
 
-        public QuestStep Create(QuestStepType type, QuestInfoArgs args, GameObject parent) {
-            var subscriber = type switch {
-                //TODO: this injection isn't working
-                QuestStepType.Trigger
-                    => _container.InstantiateComponent<TriggerEnteredSubscriberComponent>(parent),
-                
-                _ => throw new Exception($"Invalid Quest Step Type: {type}"),
-            };
+        public QuestStep Create(QuestStepInfo args, GameObject parent) {
+            if(_parent == null){
+                _parent = parent;
+            }
 
-            //_container.InjectGameObject(parent);
+            var subscriber = args.QuestStepType switch {
+                QuestStepType.Trigger
+                    => _componentFactory.Create(args.QuestStepType.ToSubscriberComponentType(), parent),
+                
+                _ => throw new Exception($"Invalid Quest Step Type: {args.QuestStepType}"),
+            };
 
             return _container.InstantiateComponent<QuestStep>(parent, new object[] { subscriber, args });
         }
