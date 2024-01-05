@@ -2,7 +2,7 @@ using System;
 
 namespace Portfolio.EventBusSystem {
     public static class EventBusEnums {
-    #region Enums
+        #region Enums
     
         public enum PauseEventType {
             None,

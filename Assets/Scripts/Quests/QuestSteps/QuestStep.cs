@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using UniRx;
 using Zenject;
 using Portfolio.EventBusSystem;
 
@@ -56,6 +58,13 @@ namespace Portfolio.Quests {
 
         private void CompleteQuestStep() {
             OnComplete?.Invoke(_questStepInfo.QuestStepID);
+
+            //wait one frame before destroying/unsubscribing from the event bus to prevent out of bounds exceptions during Publish()
+            MainThreadDispatcher.StartEndOfFrameMicroCoroutine(Destroy());
+        }
+
+        private IEnumerator Destroy() {
+            yield return null;
 
             _subscriberComponent.Destroy();
             Destroy(this);
