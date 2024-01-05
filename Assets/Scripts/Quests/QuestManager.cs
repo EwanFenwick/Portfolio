@@ -34,8 +34,7 @@ namespace Portfolio.Quests {
 #if UNITY_EDITOR
 
         [Button]
-        private void DEBUG_CheckFirstQuestsRequirements()
-        {
+        private void DEBUG_CheckFirstQuestsRequirements() {
             var q = _quests.First().Value;
             if(QuestMeetsStartingRequirements(q)) {
                 Debug.Log($"Quest '{q.ID}' meets all starting requirements");
@@ -46,13 +45,24 @@ namespace Portfolio.Quests {
         }
 
         [Button]
-        private void DEBUG_ActivateFirstQuest() {
+        private void DEBUG_StartFirstQuest() {
             var q = _quests.First().Value;
             if(q.QuestState == QuestEnums.QuestState.CanStart) {
                 Debug.Log($"Starting quest '{q.ID}'");
                 q.StartQuest();
             } else {
                 Debug.Log($"Quest '{q.ID}' cannot start");
+            }
+        }
+
+        [Button]
+        private void DEBUG_ContinueFirstQuest() {
+            var q = _quests.First().Value;
+            if(q.QuestState == QuestEnums.QuestState.CanContinue) {
+                Debug.Log($"Continuing quest '{q.ID}'");
+                q.ContinueQuest();
+            } else {
+                Debug.Log($"Quest '{q.ID}' cannot continue");
             }
         }
 

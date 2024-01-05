@@ -44,7 +44,7 @@ namespace Portfolio.Quests {
 
             //TODO: get info from saved data
             QuestState = QuestState.RequirementsNotMet;
-            CurrentQuestStep = -1;
+            CurrentQuestStep = 0;
         }
 
         #region Public Methods
@@ -52,19 +52,12 @@ namespace Portfolio.Quests {
         public void SetQuestStartable() => QuestState = QuestState.CanStart;
 
         public void StartQuest() {
-            QuestState = QuestState.InProgress;
-            AdvanceQuest();
+            ContinueQuest();
         }
 
-        public void AdvanceQuest() {
-            if(++CurrentQuestStep >= QuestSteps.Length) {
-                QuestState = QuestState.CanComplete;
-                Debug.Log($"Quest \"{ID}\" can be completed");
-                //TODO: add event for the manager to allow completion
-                return;
-            }
-
+        public void ContinueQuest() {
             ActivateCurrentQuestSteps(GetCurrentQuestSteps());
+            QuestState = QuestState.Progressing;
         }
 
         public void CompleteQuest() {
@@ -111,8 +104,19 @@ namespace Portfolio.Quests {
 
             _activeQuestSteps.RemoveAll(s => s.QuestStepID.Equals(questStepID));
 
-            if(_activeQuestSteps.Count == 0) {
-                AdvanceQuest();
+            //check if there are more steps to complete
+            if(_activeQuestSteps.Count != 0) {
+                return;
+            }
+
+            //move to next stage of the quest
+            //TODO: add 'ready to advance and complete' events for the manager
+            if(++CurrentQuestStep >= QuestSteps.Length) {
+                QuestState = QuestState.CanComplete;
+                Debug.Log($"Quest '{ID}' can complete");
+            } else {
+                QuestState = QuestState.CanContinue;
+                Debug.Log($"Quest '{ID}' can advance");
             }
         }
 

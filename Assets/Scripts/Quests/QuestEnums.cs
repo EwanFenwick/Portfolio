@@ -9,10 +9,12 @@ namespace Portfolio.Quests {
         public enum QuestState {
             RequirementsNotMet,
             CanStart,
-            InProgress,
+            Progressing,
+            CanContinue,
             CanComplete,
             Completed,
             Failed,
+            InProgress = Progressing | CanContinue,
         }
 
         public enum QuestStepType {
