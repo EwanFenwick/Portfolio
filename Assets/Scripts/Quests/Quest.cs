@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Portfolio.Rewards;
+using Portfolio.EventBusSystem;
 
 using static Portfolio.Quests.QuestEnums;
 
@@ -10,6 +11,7 @@ namespace Portfolio.Quests {
         #region Variables
 
         private readonly QuestInfo _questInfo;
+        private readonly GlobalEventBus _eventBus;
         private readonly GameObject _parentObject;
         private readonly QuestStepFactory _questStepFactory;
 
@@ -37,8 +39,9 @@ namespace Portfolio.Quests {
 
         #endregion
 
-        public Quest(QuestInfo questInfo, GameObject parentObject, QuestStepFactory stepFactory) {
+        public Quest(QuestInfo questInfo, GlobalEventBus eventBus, GameObject parentObject, QuestStepFactory stepFactory) {
             _questInfo = questInfo;
+            _eventBus = eventBus;
             _parentObject = parentObject;
             _questStepFactory = stepFactory;
 
@@ -67,6 +70,8 @@ namespace Portfolio.Quests {
             //TODO: give out reward
             Debug.Log($"Rewarding player {Reward}");
         }
+
+        public override string ToString() => ID;
 
         #endregion
 
@@ -110,13 +115,12 @@ namespace Portfolio.Quests {
             }
 
             //move to next stage of the quest
-            //TODO: add 'ready to advance and complete' events for the manager
             if(++CurrentQuestStep >= QuestSteps.Length) {
                 QuestState = QuestState.CanComplete;
-                Debug.Log($"Quest '{ID}' can complete");
+                _eventBus.Quest.Publish(this, new QuestCanCompleteEvent());
             } else {
                 QuestState = QuestState.CanContinue;
-                Debug.Log($"Quest '{ID}' can advance");
+                _eventBus.Quest.Publish(this, new QuestCanContinueEvent());
             }
         }
 

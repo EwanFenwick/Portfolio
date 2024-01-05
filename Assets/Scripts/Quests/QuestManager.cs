@@ -1,13 +1,17 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Zenject;
 using NaughtyAttributes;
+using Portfolio.EventBusSystem;
 
 namespace Portfolio.Quests {
     public class QuestManager : MonoBehaviour {
+        
         #region Variables
 
+        [Inject] private readonly GlobalEventBus _eventBus;
         [Inject] private readonly QuestFactory _questFactory;
 
         private Dictionary<string, Quest> _quests;
@@ -27,6 +31,55 @@ namespace Portfolio.Quests {
 
                 _quests.Add(allQuests[i].ID, _questFactory.Create(allQuests[i], this.gameObject));
             }
+        }
+
+        private void OnEnable() {
+            _eventBus.Quest.Subscribe<QuestCanContinueEvent>(OnQuestCanContinue);
+            _eventBus.Quest.Subscribe<QuestCanCompleteEvent>(OnQuestCanComplete);
+        }
+
+        private void OnDisable() {
+            _eventBus.Quest.Unsubscribe<QuestCanContinueEvent>(OnQuestCanContinue);
+            _eventBus.Quest.Unsubscribe<QuestCanCompleteEvent>(OnQuestCanComplete);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private bool QuestMeetsStartingRequirements(Quest quest) {
+            var requirementsMet = true;
+
+            //check if all required quests have been completed
+            foreach(var prereq in quest.QuestPrerequisities) {
+                if(_quests.TryGetValue(prereq.ID, out var q) && q.QuestState != QuestEnums.QuestState.Completed) {
+                    requirementsMet = false;
+                }
+            }
+
+            //Temporarily using 0 for player level
+            if(quest.LevelPrerequisite < 0) {
+                requirementsMet = false;
+            }
+
+            return requirementsMet;
+        }
+
+        private void OnQuestCanContinue(object sender, EventArgs eventArgs) {
+            //TODO: Quest will have dependants to notify, like quest giver/continuer/finisher
+            //If there is no designated dependant, quest will auto continue or auto complete
+            Debug.Log($"Quest '{(Quest)sender}' can continue");
+        }
+
+        private void OnQuestCanComplete(object sender, EventArgs eventArgs) {
+            Debug.Log($"Quest '{(Quest)sender}' can complete");
+        }
+
+        private Quest GetQuestByID(string ID) {
+            if(_quests[ID] == null) {
+                Debug.LogError($"Quest ID not found: {ID}");
+            }
+            return _quests[ID];
         }
 
         #endregion
@@ -78,34 +131,5 @@ namespace Portfolio.Quests {
         }
 
 #endif
-
-        #region Private Methods
-
-        private bool QuestMeetsStartingRequirements(Quest quest) {
-            var requirementsMet = true;
-
-            //check if all required quests have been completed
-            foreach(var prereq in quest.QuestPrerequisities) {
-                if(_quests.TryGetValue(prereq.ID, out var q) && q.QuestState != QuestEnums.QuestState.Completed) {
-                    requirementsMet = false;
-                }
-            }
-
-            //Temporarily using 0 for player level
-            if(quest.LevelPrerequisite < 0) {
-                requirementsMet = false;
-            }
-
-            return requirementsMet;
-        }
-
-        private Quest GetQuestByID(string ID) {
-            if(_quests[ID] == null) {
-                Debug.LogError($"Quest ID not found: {ID}");
-            }
-            return _quests[ID];
-        }
-
-        #endregion
     }
 }
