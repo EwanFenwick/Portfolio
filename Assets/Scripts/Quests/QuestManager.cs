@@ -6,6 +6,8 @@ using Zenject;
 using NaughtyAttributes;
 using Portfolio.EventBusSystem;
 
+using static Portfolio.Quests.QuestEnums;
+
 namespace Portfolio.Quests {
     public class QuestManager : MonoBehaviour {
         
@@ -43,6 +45,12 @@ namespace Portfolio.Quests {
             _eventBus.Quest.Unsubscribe<QuestCanCompleteEvent>(OnQuestCanComplete);
         }
 
+        #endregion
+
+        #region Public Methods
+
+        public QuestState GetQuestStateByID(string ID) => GetQuestByID(ID).QuestState;
+        
         #endregion
 
         #region Private Methods

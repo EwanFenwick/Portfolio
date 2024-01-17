@@ -7,8 +7,9 @@ namespace Portfolio.Dialogue {
         #region Editor Variables
 #pragma warning disable 0649
 
+        [Header("Generic Dialogue Agent")]
         [SerializeField] private string _agentName;
-        [SerializeField] private TextAsset _inkDialogueJSON;
+        [SerializeField] private TextAsset _genericDialogueJSON;
         [SerializeField] private LookAtTarget _dialogueIndicator;
 
 #pragma warning restore 0649
@@ -17,7 +18,7 @@ namespace Portfolio.Dialogue {
         #region Properties
 
         public string AgentName => _agentName;
-        public TextAsset Dialogue => _inkDialogueJSON;
+        public virtual TextAsset Dialogue => _genericDialogueJSON;
 
         #endregion
 
