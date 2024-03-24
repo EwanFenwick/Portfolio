@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agentName: Bob the test NPC
-  _inkDialogueJSON: {fileID: 4900000, guid: 914691cb6fc1c7946b0a45ec915f003d, type: 3}
+  _genericDialogueJSON: {fileID: 4900000, guid: 914691cb6fc1c7946b0a45ec915f003d, type: 3}
   _dialogueIndicator: {fileID: 8882513266268025189}
 --- !u!114 &3208867554904214357
 MonoBehaviour:
